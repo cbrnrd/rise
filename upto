@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+# The first up program didnt work out so well
+
+# Put all our core library files in the require path
+$:.unshift(File.expand_path(File.join(File.dirname(__FILE__), 'lib')))
+
+require 'core'
+
+uploader = Upto::Transport::Uploader.new('.')
+uploader.upload!(5)
