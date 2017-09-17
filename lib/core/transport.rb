@@ -26,7 +26,7 @@ module Upto
 
         puts "Total files: #{total_files.to_s.blue}... uploading (folder #{folder_path} #{include_folder ? '' : 'not '}included)"
         spinner_thread = Thread.new do
-          Whirly.start(spinner: 'arrow3') do
+          Whirly.start(spinner: 'bouncingBall') do
             sleep(5)
           end
         end
