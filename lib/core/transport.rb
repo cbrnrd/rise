@@ -2,71 +2,41 @@
 # This file handles all communication to the Upto servers
 ##
 require 'colorize'
+require 'rex/text'
+require 'uri'
+require 'json'
+require 'http'
+
 module Upto
   module Transport
 
     # Handles uploading files
     class Uploader
 
-      attr_reader :folder_path, :total_files, :include_folder
+      attr_reader :folder_path, :total_files, :include_folder, :uuid
       attr_accessor :files
 
       def initialize(folder_path, include_folder=true)
           @folder_path    = folder_path
-          @files          = Dir.glob("#{folder_path}/**/*")
+          @files          = Dir.glob("#{File.absolute_path(folder_path)}/**/*")
           @total_files    = @files.length
-          @connection     = TCPSocket.new('0.0.0.0', 5753)
           @include_folder = include_folder
+          @uuid           = "#{File.basename(File.absolute_path(folder_path))}-#{Rex::Text::rand_text_alphanumeric(8)}"  # Structure: foldername-8RNDLTRS
       end
 
-      def upload!(thread_count=5, verbose=false)
-        file_number = 0
-        mutex = Mutex.new
-        threads = []
+      def upload!
+        uri_base = "http://localhost/api/v1/#{@uuid}"  # XXX: change this when the domain is registered
+        uri = ''
+        files.each do |f|
+          final_path = File.absolute_path(f).gsub(File.expand_path(folder_path), '')
+          uri = URI.parse("#{uri_base}/#{final_path}")
+          response = HTTP.put(uri.to_s, :body => File.read(f)) unless File.directory?(f)
+          response = HTTP.put(uri.to_s, :body => nil) if File.directory?(f)
 
-        puts "Total files: #{total_files.to_s.blue}... uploading (folder #{folder_path} #{include_folder ? '' : 'not '}included)"
-        spinner_thread = Thread.new do
-          Whirly.start(spinner: 'bouncingBall') do
-            sleep(5)
-          end
         end
-        thread_count.times do |i|
-          threads[i] = Thread.new {
-            until files.empty?
-              mutex.synchronize do
-                file_number += 1
-                Thread.current["file_number"] = file_number
-              end
-              file = files.pop rescue nil
-              next unless file
-
-              # Define destination path
-              if include_folder
-                path = file
-              else
-                path = file.sub(/^#{folder_path}\//, '')
-              end
-
-              puts "[#{Thread.current["file_number"]}/#{total_files}] uploading..." if verbose
-
-              data = File.open(file)
-
-              unless File.directory?(data)
-                # DO THE ACTUAL UPLOAD HERE
-                #obj = s3_bucket.object(path)
-                #obj.put(data, { acl: :public_read, body: data })
-                puts files
-                @connection.puts("FILENAME:")
-                puts "Uploading #{Thread.current["file_number"]}"
-              end
-
-              data.close
-            end
-          }
-        end
-        threads.each { |t| t.join }
-        spinner_thread.join
+        return uri_base
       end
+
     end
   end
 end

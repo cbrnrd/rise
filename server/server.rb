@@ -1,38 +1,32 @@
-#!/usr/bin/env ruby
-=begin
-require 'socket'
-server = TCPServer.new '0.0.0.0', 5753
-
-loop do
-  Thread.new(server.accept) do |client|
-    puts 'conn'
-    puts client.gets
-  end
-end
-=end
+# Sinatra requirements
 require 'sinatra'
-require 'thin'  # WEBrick makes too much noise
+require 'thin'
 require 'sinatra/namespace'
 
+# Other useful stuff
+require 'fileutils'
+
 set :server, "thin"
-set :environment, :production
+set :environment, :development
+set :port, 80
 
 namespace '/api/v1' do
 
-  def base_url
-        @base_url ||= "#{request.env['rack.url_scheme']}://{request.env['HTTP_HOST']}"
+  put '/:uuid/:path' do |uuid, path|
+    puts File.directory? File.join(Dir.home, 'upto-server', uuid)
+    if File.directory?(File.join(Dir.home, 'upto-server', uuid))
+      File.open(File.join(Dir.home, 'upto-server', uuid, path), 'w+') do |f|
+        request_body = request.body.read
+        f.puts(request_body) if !request_body.nil?
+        FileUtils.mkdir(File.join(Dir.home, 'upto-server', uuid, path)) if request_body.nil?
+      end
+    else
+      FileUtils.mkdir(File.join(Dir.home, 'upto-server', uuid))
+      File.open(File.join(Dir.home, 'upto-server', uuid, path), 'w+') do |f|
+        request_body = request.body.read
+        f.puts(request_body) if !request_body.nil?
+        FileUtils.mkdir(File.join(Dir.home, 'upto-server', uuid, path)) if request_body.nil?
+      end
+    end
   end
-
-  before do
-    content_type 'application/json'
-  end
-
-  get '/hi' do
-    'hi'.to_json
-  end
-
-  get '/:file' do |file|
-    File.read(file)
-  end
-
 end
