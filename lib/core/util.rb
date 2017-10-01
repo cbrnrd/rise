@@ -9,18 +9,18 @@ require_relative 'constants'
 #
 # Utility methods
 #
-module Upto
+module Rise
   module Util
 
     def self.is_first_run?
-      false if File.directory?(File.join(Dir.home, '.upto'))
+      false if File.directory?(File.join(Dir.home, '.rise'))
       true
     end
 
     def self.setup
       puts Paint["Detected first time setup, creating necessary files...", :blue]
-      FileUtils.mkdir(UPTO_DATA_DIR)
-      FileUtils.mkdir(File.join(UPTO_DATA_DIR, 'auth'))
+      FileUtils.mkdir(RISE_DATA_DIR)
+      FileUtils.mkdir(File.join(RISE_DATA_DIR, 'auth'))
 
       # Get the input from the user
       print Paint["1. Log in\n2. Sign up\n  > ", :bold]
@@ -37,7 +37,7 @@ module Upto
         end
       end
 
-      File.open(File.join(UPTO_DATA_DIR, 'auth', 'creds.json'), 'w+') do |f|
+      File.open(File.join(RISE_DATA_DIR, 'auth', 'creds.json'), 'w+') do |f|
         f.puts('# This file is used to login to the upto service')
         f.puts('# DO NOT SHARE THIS WITH ANYONE')
       end
@@ -74,7 +74,7 @@ def signup
   res = HTTP.post("http://#{DOMAIN}:#{AUTH_PORT}/signup?email=#{email}&hash=#{hash}")
   if res.code == 200
     puts Paint["Signup successful!", :green, :bold]
-    File.open(File.join(UPTO_DATA_DIR, 'auth', 'creds.json'), 'a') do |f|
+    File.open(File.join(RISE_DATA_DIR, 'auth', 'creds.json'), 'a') do |f|
       creds_hash = {
         'email' => email,
         'hash'  => hash

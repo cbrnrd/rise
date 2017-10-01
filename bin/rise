@@ -5,7 +5,7 @@
 # => Try to fix spinner bug on Windows (may be a weird interaction with \r)
 
 # Put all our core library files in the require path
-$:.unshift(File.expand_path(File.join(File.dirname(__FILE__), 'lib')))
+$:.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib')))
 
 require 'core'
 
@@ -28,17 +28,18 @@ OptionParser.new do |opts|
   end
 end.parse!(ARGV)
 
-if Upto::Util.is_first_run?
-  Upto::Util.setup
+if Rise::Util.is_first_run?
+  Rise::Util.setup
 end
 
 result_url = ''
-uploader = Upto::Transport::Uploader.new(options[:directory]) unless options[:directory].nil?
-uploader = Upto::Transport::Uploader.new(Dir.pwd) if options[:directory].nil?
+uploader = Rise::Transport::Uploader.new(options[:directory]) unless options[:directory].nil?
+uploader = Rise::Transport::Uploader.new(Dir.pwd) if options[:directory].nil?
 
 
-puts Paint["Thanks for using upto! Your local source for serverless deployment!", "#95a5a6"]
-Whirly.start(spinner: "toggle8", status: "Uploading files (#{uploader.total_files} total)") do
+puts Paint["Thanks for using Rise! Your local source for serverless deployment!", "#95a5a6"]
+
+Whirly.start(spinner: "bouncing", status: "Uploading files (#{uploader.current_file}/#{uploader.total_files})") do
   beginning_time = Time.now
   sleep 1  # Just to see the spinner if the files are small
   result_url = uploader.upload!(options[:verbose])  # Do the file upload
@@ -47,4 +48,6 @@ Whirly.start(spinner: "toggle8", status: "Uploading files (#{uploader.total_file
   Clipboard.copy(result_url)
   print Paint["Your url is: #{result_url} (copied to clipboard) ", :bold]
   puts Paint["[#{((Time.now - beginning_time)).round(2)}s]", "#95a5a6"]
+
+  puts Paint["Deployment successful!", '#3498db']
 end

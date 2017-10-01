@@ -7,13 +7,13 @@ require 'uri'
 require 'json'
 require 'http'
 
-module Upto
+module Rise
   module Transport
 
     # Handles uploading files
     class Uploader
 
-      attr_reader :folder_path, :total_files, :include_folder, :uuid
+      attr_reader :folder_path, :total_files, :include_folder, :uuid, :current_file
       attr_accessor :files
 
       def initialize(folder_path, include_folder=true)
@@ -22,12 +22,14 @@ module Upto
           @total_files    = @files.length
           @include_folder = include_folder
           @uuid           = "#{File.basename(File.absolute_path(folder_path))}-#{Rex::Text::rand_text_alphanumeric(8)}"  # Structure: foldername-8RNDLTRS
+          @current_file   = 0
       end
 
       def upload!(verbose=false)
         uri_base = "http://localhost:8080/api/v1/#{@uuid}"  # XXX: change this when the domain is registered
         uri = ''
         files.each do |f|
+          @current_file = current_file += 1
           final_path = File.absolute_path(f).gsub(File.expand_path(folder_path), '')
           uri = URI.parse("#{uri_base}/#{final_path}")
           response = HTTP.put(uri.to_s, :body => File.read(f)) unless File.directory?(f)
