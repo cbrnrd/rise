@@ -1,5 +1,9 @@
 #!/usr/bin/env ruby
 
+# TODO
+# => fix recursive upload bug where it only uploads the first layer of files (dirs are just blank files)
+# => Try to fix spinner bug on Windows (may be a weird interaction with \r)
+
 # Put all our core library files in the require path
 $:.unshift(File.expand_path(File.join(File.dirname(__FILE__), 'lib')))
 
@@ -7,7 +11,7 @@ require 'core'
 
 options = {}
 OptionParser.new do |opts|
-  opts.banner = "Usage: #{__FILE__} [options]"
+  opts.banner = "Usage: #{$PROGRAM_NAME} [options]"
 
   opts.separator Paint["\nGeneral Options: ", '#95a5a6']
   opts.on("-v", "--verbose", "Run verbosely") do |v|
@@ -22,10 +26,10 @@ OptionParser.new do |opts|
     puts opts
     exit
   end
-end.parse!
+end.parse!(ARGV)
 
-if Upto::Utils.is_first_run?
-  puts "First run"
+if Upto::Util.is_first_run?
+  Upto::Util.setup
 end
 
 result_url = ''
@@ -33,6 +37,7 @@ uploader = Upto::Transport::Uploader.new(options[:directory]) unless options[:di
 uploader = Upto::Transport::Uploader.new(Dir.pwd) if options[:directory].nil?
 
 
+puts Paint["Thanks for using upto! Your local source for serverless deployment!", "#95a5a6"]
 Whirly.start(spinner: "toggle8", status: "Uploading files (#{uploader.total_files} total)") do
   beginning_time = Time.now
   sleep 1  # Just to see the spinner if the files are small

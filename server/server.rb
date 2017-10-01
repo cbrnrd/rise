@@ -8,7 +8,7 @@ require 'sinatra/namespace'
 require 'fileutils'
 
 set :server, "thin"
-set :environment, :development
+set :environment, :production
 set :port, 8080
 
 namespace '/api/v1' do
