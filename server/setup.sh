@@ -1,4 +1,4 @@
 #!/bin/bash
-mkdir ~/upto-server
+mkdir ~/rise-server
 
 bundle install
