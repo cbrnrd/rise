@@ -2,8 +2,8 @@ require 'fileutils'
 require 'paint'
 require 'json'
 require 'http'
-require 'password'
 require 'bcrypt'
+require 'io/console'
 require_relative 'constants'
 
 #
@@ -51,8 +51,8 @@ def login
 
   print "\nEmail: "
   email = gets.chomp!
-  puts
-  password = Password.get('Password: ')
+  print "\nPassword: "
+  password = STDIN.noecho(&:gets)
   BCrypt::Engine.cost = 5  # not too much strain
   hash = BCrypt::Password.create(password)
   res = HTTP.post("http://#{DOMAIN}:#{AUTH_PORT}/login?email=#{email}&hash=#{hash}")
@@ -67,8 +67,8 @@ end
 def signup
   print "\nEmail: "
   email = gets.chomp!
-  puts
-  password = Password.get('Password: ')
+  print "\nPassword: "
+  password = STDIN.noecho(&:gets)
   BCrypt::Engine.cost = 5  # not too much strain
   hash = BCrypt::Password.create(password)
   res = HTTP.post("http://#{DOMAIN}:#{AUTH_PORT}/signup?email=#{email}&hash=#{hash}")
