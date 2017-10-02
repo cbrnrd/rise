@@ -1,7 +1,10 @@
 language: ruby
-os: trusty
+dist: trusty
 rvm:
   - 2.4
   - jruby
   - rbx-2
+  
+script: bundle && bundle install
+
   
