@@ -1,0 +1,7 @@
+language: ruby
+os: trusty
+rvm:
+  - 2.4
+  - jruby
+  - rbx-2
+  
