@@ -30,6 +30,8 @@ end.parse!(ARGV)
 
 if Rise::Util.is_first_run?
   Rise::Util.setup
+  puts "\nPlease run the `rise` command again to upload your files."
+  exit 0
 end
 
 result_url = ''
@@ -39,7 +41,7 @@ uploader = Rise::Transport::Uploader.new(Dir.pwd) if options[:directory].nil?
 
 puts Paint["Thanks for using Rise! Your local source for serverless deployment!", "#95a5a6"]
 
-Whirly.start(spinner: "bouncing", status: "Uploading files (#{uploader.current_file}/#{uploader.total_files})") do
+Whirly.start(spinner: "line", status: "Uploading files (#{uploader.current_file}/#{uploader.total_files})") do
   beginning_time = Time.now
   sleep 1  # Just to see the spinner if the files are small
   result_url = uploader.upload!(options[:verbose])  # Do the file upload

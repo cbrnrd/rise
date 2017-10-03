@@ -2,7 +2,7 @@ require 'fileutils'
 require 'paint'
 require 'json'
 require 'http'
-require 'bcrypt'
+require 'digest'
 require 'io/console'
 require_relative 'constants'
 
@@ -13,8 +13,7 @@ module Rise
   module Util
 
     def self.is_first_run?
-      false if File.directory?(File.join(Dir.home, '.rise'))
-      true
+      !File.directory?(File.join(Dir.home, '.rise'))
     end
 
     def self.setup
@@ -37,10 +36,6 @@ module Rise
         end
       end
 
-      File.open(File.join(RISE_DATA_DIR, 'auth', 'creds.json'), 'w+') do |f|
-        f.puts('# This file is used to login to the upto service')
-        f.puts('# DO NOT SHARE THIS WITH ANYONE')
-      end
     end
 
   end
@@ -53,14 +48,13 @@ def login
   email = gets.chomp!
   print "\nPassword: "
   password = STDIN.noecho(&:gets)
-  BCrypt::Engine.cost = 5  # not too much strain
-  hash = BCrypt::Password.create(password)
+  hash = Digest::SHA256.base64digest(password).gsub('/', '')  # this means it's not REALLY SHA256 but it's very very close (it screws with the sinatra mappings)
   res = HTTP.post("http://#{DOMAIN}:#{AUTH_PORT}/login?email=#{email}&hash=#{hash}")
   if res.code == 200
-    puts Paint["Login successful!", :green, :bold]
+    puts Paint["\nLogin successful!", :green, :bold]
   else
-    puts Paint["Login failed!", :red, :bold]
-    puts "Printing error: #{res.body}"
+    puts Paint["\nLogin failed!", :red, :bold]
+    puts "Printing error: #{res.code}: #{res.body}"
   end
 end
 
@@ -69,11 +63,10 @@ def signup
   email = gets.chomp!
   print "\nPassword: "
   password = STDIN.noecho(&:gets)
-  BCrypt::Engine.cost = 5  # not too much strain
-  hash = BCrypt::Password.create(password)
+  hash = Digest::SHA256.base64digest(password).gsub('/', '')
   res = HTTP.post("http://#{DOMAIN}:#{AUTH_PORT}/signup?email=#{email}&hash=#{hash}")
   if res.code == 200
-    puts Paint["Signup successful!", :green, :bold]
+    puts Paint["\nSignup successful!", :green, :bold]
     File.open(File.join(RISE_DATA_DIR, 'auth', 'creds.json'), 'a') do |f|
       creds_hash = {
         'email' => email,
@@ -82,7 +75,7 @@ def signup
       f.puts(creds_hash.to_json)
     end
   elsif res.code == 409  # user already exists
-    puts Paint[res.body, :red]
-    return
+    puts Paint["\nSignup failed!", :red, :bold]
+    puts "Printing error: #{res.body}"
   end
 end
