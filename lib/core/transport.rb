@@ -27,14 +27,11 @@ module Rise
       def upload!(*)
         uri_base = "http://localhost:8080/api/v1/#{@uuid}"  # XXX: change this when the domain is registered
         uri = ''
-        ordered_files = []
 
-        # put the directories first in the array
-        files.each do |f|
-          ordered_files.unshift(f) if File.directory?(f)
-          ordered_files << f if !File.directory?(f)
-        end
-        puts ordered_files
+        # This sorts the files by (file path) length.
+        # It is supposed to make the server make the first layer of files
+        # before the rest of the layers.
+        ordered_files = files.sort_by(&:length)
         ordered_files.each do |f|
           isdir = File.directory?(f)
           final_path = File.absolute_path(f).gsub(File.expand_path(folder_path), '')
