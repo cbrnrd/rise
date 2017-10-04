@@ -10,5 +10,8 @@ configure :production do
 end
 
 get '/:uuid/*' do |uuid, file|
+  if file.nil?
+    haml :dir_listing
+  end
   File.read(File.join(Dir.home, 'rise-server', uuid, file))
 end

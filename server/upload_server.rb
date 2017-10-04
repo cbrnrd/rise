@@ -22,8 +22,6 @@ FileUtils.mkdir(File.join(Dir.home, 'rise-server')) if !File.directory?(File.joi
 
 namespace '/api/v1' do
 
-  # BUG: this is preventing a recursive file upload because the slashes from the put requests
-  # are messing with the sinatra mapping so sinatra returns a 404 to any file that is in a directory
   put '/:uuid/*' do |uuid, path|
     isdir = params[:dir]
     if File.directory?(File.join(Dir.home, 'rise-server', uuid))

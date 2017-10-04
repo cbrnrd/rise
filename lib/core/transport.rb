@@ -36,7 +36,6 @@ module Rise
           isdir = File.directory?(f)
           final_path = File.absolute_path(f).gsub(File.expand_path(folder_path), '')
           uri = URI.parse("#{uri_base}/#{final_path}?dir=#{isdir}")
-          puts uri
           begin
             HTTP.put(uri.to_s, :body => File.read(f))
           rescue Errno::EISDIR
