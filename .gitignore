@@ -1,2 +1,5 @@
 # any test files
 *test*
+
+# compiled gems
+rise-*.gem

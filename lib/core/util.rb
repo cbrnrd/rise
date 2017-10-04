@@ -12,10 +12,16 @@ require_relative 'constants'
 module Rise
   module Util
 
+    #
+    # Checks if rise is being run for the first time
+    #
     def self.is_first_run?
       !File.directory?(File.join(Dir.home, '.rise'))
     end
 
+    #
+    # Creates all of the necessary files and login information
+    #
     def self.setup
       puts Paint['Detected first time setup, creating necessary files...', :blue]
       FileUtils.mkdir(RISE_DATA_DIR)
@@ -41,7 +47,7 @@ module Rise
   end
 end
 
-# We generally don't want to use these anywhere else, so theyre out of the scope of the module
+# DO NOT USE
 def login
 
   print '\nEmail: '
@@ -58,6 +64,7 @@ def login
   end
 end
 
+# DO NOT USE
 def signup
   print '\nEmail: '
   email = gets.chomp!
