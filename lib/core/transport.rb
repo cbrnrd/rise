@@ -17,24 +17,35 @@ module Rise
       attr_accessor :files
 
       def initialize(folder_path, include_folder=true)
-          @folder_path    = folder_path
-          @files          = Dir.glob("#{File.absolute_path(folder_path)}/**/*")
-          @total_files    = @files.length
-          @include_folder = include_folder
-          @uuid           = "#{File.basename(File.absolute_path(folder_path))}-#{Rex::Text::rand_text_alphanumeric(8)}"  # Structure: foldername-8RNDLTRS
-          @current_file   = 0
+        @folder_path    = folder_path
+        @files          = Dir.glob("#{File.absolute_path(folder_path)}/**/*")
+        @total_files    = @files.length
+        @include_folder = include_folder
+        @uuid           = "#{File.basename(File.absolute_path(folder_path))}-#{Rex::Text::rand_text_alphanumeric(8)}"  # Structure: foldername-8RNDLTRS
       end
 
-      def upload!(verbose=false)
+      def upload!(*)
         uri_base = "http://localhost:8080/api/v1/#{@uuid}"  # XXX: change this when the domain is registered
         uri = ''
-        files.each do |f|
-          @current_file = current_file += 1
-          final_path = File.absolute_path(f).gsub(File.expand_path(folder_path), '')
-          uri = URI.parse("#{uri_base}/#{final_path}")
-          response = HTTP.put(uri.to_s, :body => File.read(f)) unless File.directory?(f)
-          response = HTTP.put(uri.to_s, :body => nil) if File.directory?(f)
+        ordered_files = []
 
+        # put the directories first in the array
+        files.each do |f|
+          ordered_files.unshift(f) if File.directory?(f)
+          ordered_files << f if !File.directory?(f)
+        end
+        puts ordered_files
+        ordered_files.each do |f|
+          isdir = File.directory?(f)
+          final_path = File.absolute_path(f).gsub(File.expand_path(folder_path), '')
+          uri = URI.parse("#{uri_base}/#{final_path}?dir=#{isdir}")
+          puts uri
+          begin
+            HTTP.put(uri.to_s, :body => File.read(f))
+          rescue Errno::EISDIR
+            HTTP.put(uri.to_s, :body => '')
+            next
+          end
         end
         return uri_base
       end

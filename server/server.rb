@@ -1,45 +1,49 @@
 #!/usr/bin/env ruby
 # Sinatra requirements
 require 'sinatra'
-#require 'thin'
+require 'thin'
 require 'sinatra/namespace'
+require 'paint'
 
 # Other useful stuff
 require 'fileutils'
 
-set :server, "thin"
-set :environment, :production
+# Set sinatra settings here
+# Consider:
+# => Switching to +:production+ instead of +:development+ (which is default)
+# => Switch the port
+# => Starting a sinatra server to serve the files from this file (start a different script from this one)
+set :server, 'thin'
 set :port, 8080
-set :root, File.join(Dir.home, 'rise-server')
+
+FileUtils.mkdir(File.join(Dir.home, 'rise-server')) if !File.directory?(File.join(Dir.home, 'rise-server'))
 
 namespace '/api/v1' do
 
-  put '/:uuid/:path' do |uuid, path|
+  # BUG: this is preventing a recursive file upload because the slashes from the put requests
+  # are messing with the sinatra mapping so sinatra returns a 404 to any file that is in a directory
+  put '/:uuid/:path/?' do |uuid, path|
+    isdir = params[:dir]
     if File.directory?(File.join(Dir.home, 'rise-server', uuid))
+      if isdir == "true"
+        FileUtils.mkdir(File.join(Dir.home, 'rise-server', uuid, path))
+        return
+      end
       File.open(File.join(Dir.home, 'rise-server', uuid, path), 'w+') do |f|
         request_body = request.body.read
-        f.puts(request_body) if !request_body.nil?
-        FileUtils.mkdir(File.join(Dir.home, 'rise-server', uuid, path)) if request_body.nil?
+        f.puts(request_body)
       end
     else
       FileUtils.mkdir(File.join(Dir.home, 'rise-server', uuid))
+      puts Paint["[#{Time.now}] Creating initial folder with uuid: #{uuid}", :blue]
+      if isdir == "true"
+        FileUtils.mkdir(File.join(Dir.home, 'rise-server', uuid, path))
+        return
+      end
       File.open(File.join(Dir.home, 'rise-server', uuid, path), 'w+') do |f|
         request_body = request.body.read
-        f.puts(request_body) if !request_body.nil?
-        FileUtils.mkdir(File.join(Dir.home, 'rise-server', uuid, path)) if request_body.nil?
+        f.puts(request_body)
       end
     end
   end
-end
-
-get '/:uuid/:file/?' do |uuid, file|
-  begin
-    File.read(File.join(Dir.home, 'rise-server', uuid, file))
-  rescue Errno::ENOENT
-    status 404
-  end
-end
-
-get '/:uuid/?' do |uuid|
-  Dir.entries(File.join(Dir.home, 'rise-server', uuid)).map{|e| "<a href src=\"#{e}\">#{e}</a>\n"}
 end

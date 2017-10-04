@@ -7,6 +7,7 @@ GEM
     eventmachine (1.2.5-x64-mingw32)
     multi_json (1.12.2)
     mustermann (1.0.1)
+    paint (2.0.0)
     rack (2.0.3)
     rack-protection (2.0.0)
       rack
@@ -33,6 +34,7 @@ PLATFORMS
   x64-mingw32
 
 DEPENDENCIES
+  paint
   sinatra
   sinatra-contrib
   thin

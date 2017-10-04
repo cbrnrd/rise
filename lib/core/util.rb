@@ -48,7 +48,7 @@ def login
   email = gets.chomp!
   print "\nPassword: "
   password = STDIN.noecho(&:gets)
-  hash = Digest::SHA256.base64digest(password).gsub('/', '')  # this means it's not REALLY SHA256 but it's very very close (it screws with the sinatra mappings)
+  hash = Digest::SHA256.hexdigest(password)
   res = HTTP.post("http://#{DOMAIN}:#{AUTH_PORT}/login?email=#{email}&hash=#{hash}")
   if res.code == 200
     puts Paint["\nLogin successful!", :green, :bold]
@@ -63,7 +63,7 @@ def signup
   email = gets.chomp!
   print "\nPassword: "
   password = STDIN.noecho(&:gets)
-  hash = Digest::SHA256.base64digest(password).gsub('/', '')
+  hash = Digest::SHA256.hexdigest(password)
   res = HTTP.post("http://#{DOMAIN}:#{AUTH_PORT}/signup?email=#{email}&hash=#{hash}")
   if res.code == 200
     puts Paint["\nSignup successful!", :green, :bold]

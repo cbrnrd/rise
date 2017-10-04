@@ -2,10 +2,11 @@
 
 # TODO
 # => fix recursive upload bug where it only uploads the first layer of files (dirs are just blank files)
+#    => UPDATE: dirs are now dirs, but theyre empty, details on server/server.rb:23-24
 # => Try to fix spinner bug on Windows (may be a weird interaction with \r)
 
 # Put all our core library files in the require path
-$:.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib')))
+$LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib')))
 
 require 'core'
 
@@ -41,7 +42,7 @@ uploader = Rise::Transport::Uploader.new(Dir.pwd) if options[:directory].nil?
 
 puts Paint["Thanks for using Rise! Your local source for serverless deployment!", "#95a5a6"]
 
-Whirly.start(spinner: "line", status: "Uploading files (#{uploader.current_file}/#{uploader.total_files})") do
+Whirly.start(spinner: "dots", status: "Uploading files (#{uploader.total_files} total files)") do
   beginning_time = Time.now
   sleep 1  # Just to see the spinner if the files are small
   result_url = uploader.upload!(options[:verbose])  # Do the file upload
