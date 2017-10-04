@@ -11,7 +11,7 @@ Using rise is simple, just run the `rise` command
 
 ## Installing
 
-In order to get now up and running, there's 2 ways you can install it.
+In order to get rise up and running, there's 2 ways you can install it.
 
 1. Download the gem
 
