@@ -33,12 +33,18 @@ In order to get now up and running, there's 2 ways you can install it.
 
 Please read [CONTRIBUTING.md](https://github.com/cbrnrd/rise/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting a pull requests.
 
+
+## Coming soon
+  - rise.sh registration and 24/7 server uptime
+  - gzip file transfer
+  - actual use of the password hash for secure uploads
+
 ## Authors
 
 - **Carter Brainerd** - [Website](https://carterbrainerd.me)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/cbrnrd/rise/contributors) who participated in this project.
 
 ## License
 
-This project is licensed under the MIT License - see the <LICENSE.md> file for details
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/cbrnrd/rise/blob/master/LICENSE) file for details
