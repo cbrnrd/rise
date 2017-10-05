@@ -3,3 +3,6 @@
 
 # compiled gems
 rise-*.gem
+
+# Old html files
+views
