@@ -9,10 +9,6 @@ require 'paint'
 require 'fileutils'
 
 # Set sinatra settings here
-# Consider:
-# => Switching to +:production+ instead of +:development+ (which is default)
-# => Switch the port
-# => Starting a sinatra server to serve the files from this file (start a different script from this one)
 set :environment, :development
 set :server, 'thin'
 set :port, 8080
