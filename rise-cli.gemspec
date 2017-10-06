@@ -1,5 +1,5 @@
 Gem::Specification.new do |s|
-  s.name        = 'rise'
+  s.name        = 'rise-cli'
   s.version     = '0.1.0'
   s.executables << 'rise'
   s.date        = '2017-10-04'

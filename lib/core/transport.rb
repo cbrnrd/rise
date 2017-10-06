@@ -26,7 +26,7 @@ module Rise
 
       def upload!(*)
         upload_uri_base = "http://rise.sh:8080/api/v1/#{@uuid}"
-        access_uri_base = "http://rise.sh/#{@uuid}"
+        access_uri = "http://rise.sh/#{@uuid}"
         uri = ''
 
         # This sorts the files by (file path) length.
@@ -44,7 +44,7 @@ module Rise
             next
           end
         end
-        return upload_uri_base
+        return access_uri
       end
 
     end
