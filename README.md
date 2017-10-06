@@ -1,7 +1,7 @@
 ![rise](https://github.com/cbrnrd/rise/raw/master/img/rise_logo.png)
 [![Code Climate](https://codeclimate.com/github/cbrnrd/rise/badges/gpa.svg)](https://codeclimate.com/github/cbrnrd/rise)
 [![Build Status](https://travis-ci.org/cbrnrd/rise.svg?branch=master)](https://travis-ci.org/cbrnrd/rise)
-
+[![Gem Version](https://badge.fury.io/rb/rise-cli.svg)](https://badge.fury.io/rb/rise-cli)
 
 # Usage
 
