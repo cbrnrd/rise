@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'rise-cli'
-  s.version     = '0.1.0'
-  s.executables << 'rise'
+  s.version     = '0.1.1'
+  s.executables = ['rise', 'setup']
   s.date        = '2017-10-04'
   s.summary     = "Simple serverless website deployment"
   s.authors     = ["Carter Brainerd"]

@@ -7,7 +7,7 @@
 
 Using rise is simple, just run the `rise` command
 
-[![asciicast](https://asciinema.org/a/KfCcwzkm5b5gKOkfJ9vfBcPQz.png)](https://asciinema.org/a/KfCcwzkm5b5gKOkfJ9vfBcPQz)
+[![asciicast](https://asciinema.org/a/Z7aigs1yAaqJWYqL1fQaqv9yt.png)](https://asciinema.org/a/Z7aigs1yAaqJWYqL1fQaqv9yt)
 
 ## Installing
 
