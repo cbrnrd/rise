@@ -25,7 +25,8 @@ module Rise
       end
 
       def upload!(*)
-        uri_base = "http://localhost:8080/api/v1/#{@uuid}"  # XXX: change this when the domain is registered
+        upload_uri_base = "http://rise.sh:8080/api/v1/#{@uuid}"
+        access_uri_base = "http://rise.sh/#{@uuid}"
         uri = ''
 
         # This sorts the files by (file path) length.
@@ -35,7 +36,7 @@ module Rise
         ordered_files.each do |f|
           isdir = File.directory?(f)
           final_path = File.absolute_path(f).gsub(File.expand_path(folder_path), '')
-          uri = URI.parse("#{uri_base}/#{final_path}?dir=#{isdir}")
+          uri = URI.parse("#{upload_uri_base}/#{final_path}?dir=#{isdir}")
           begin
             HTTP.put(uri.to_s, :body => File.read(f))
           rescue Errno::EISDIR
@@ -43,7 +44,7 @@ module Rise
             next
           end
         end
-        return uri_base
+        return upload_uri_base
       end
 
     end

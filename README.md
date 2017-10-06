@@ -16,7 +16,7 @@ In order to get rise up and running, there's 2 ways you can install it.
 1. Download the gem
 
   ```
-  gem install rise
+  gem install rise-cli
   ```
 
 2. Build from source

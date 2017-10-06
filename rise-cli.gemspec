@@ -6,8 +6,10 @@ Gem::Specification.new do |s|
   s.summary     = "Simple serverless website deployment"
   s.authors     = ["Carter Brainerd"]
   s.email       = '0xCB@protonmail.com'
-  s.files       = Dir.glob("./**/*")
+  s.files       = `git ls-files`.split($/).reject { |file|
+      file =~ /^server|rise.gemspec/
+    }
   s.homepage    =
-    'http://rubygems.org/gems/rise'
+    'http://rubygems.org/gems/rise-cli'
   s.license       = 'MIT'
 end
