@@ -1,13 +1,17 @@
+# Put all our core library files in the require path
+$LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), 'lib')))
+require 'core'
+
 Gem::Specification.new do |s|
-  s.name        = 'rise-cli'
-  s.version     = '0.1.1'
-  s.executables = ['rise', 'setup']
-  s.date        = '2017-10-04'
+  s.name        = Rise::Constants::NAME
+  s.version     = Rise::Constants::VERSION
+  s.executables = ['rise', 'setup', 'console']
+  s.date        = Time.now.strftime('%Y-%m-%d')
   s.summary     = "Simple serverless website deployment"
-  s.authors     = ["Carter Brainerd"]
-  s.email       = '0xCB@protonmail.com'
+  s.authors     = Rise::Constants::AUTHORS
+  s.email       = Rise::Constants::EMAIL
   s.files       = `git ls-files`.split($/).reject { |file|
-      file =~ /^server|rise.gemspec/
+      file =~ /^server|^spec/
     }
   s.homepage    =
     'http://rubygems.org/gems/rise-cli'

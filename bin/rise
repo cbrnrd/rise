@@ -1,12 +1,7 @@
 #!/usr/bin/env ruby
 
 # TODO
-# => fix recursive upload bug where it only uploads the first layer of files (dirs are just blank files)
-#    => UPDATE: dirs are now dirs, but theyre empty, details on server/server.rb:23-24
 # => Try to fix spinner bug on Windows (may be a weird interaction with \r)
-
-# Put all our core library files in the require path
-$LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib')))
 
 require 'core'
 
