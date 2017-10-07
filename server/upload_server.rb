@@ -1,15 +1,16 @@
 #!/usr/bin/env ruby
-# Sinatra requirements
-require 'sinatra'
-require 'sinatra/base'
-require 'thin'
-require 'sinatra/namespace'
-require 'paint'
-
-# Other useful stuff
-require 'fileutils'
-
 class UploadServer < Sinatra::Base
+
+  # Sinatra requirements
+  require 'sinatra'
+  require 'sinatra/base'
+  require 'thin'
+  require 'sinatra/namespace'
+  require 'paint'
+
+  # Other useful stuff
+  require 'fileutils'
+
   # Set sinatra settings here
   set :environment, :production
   set :server, 'thin'
