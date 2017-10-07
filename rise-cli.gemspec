@@ -16,4 +16,10 @@ Gem::Specification.new do |s|
   s.homepage    =
     'http://rubygems.org/gems/rise-cli'
   s.license       = 'MIT'
+
+  s.add_runtime_dependency 'clipboard'
+  s.add_runtime_dependency 'http'
+  s.add_runtime_dependency 'paint'
+  s.add_runtime_dependency 'rex-text'
+  s.add_runtime_dependency 'whirly'
 end
