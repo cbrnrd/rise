@@ -1,17 +1,18 @@
-require 'sinatra'
-require 'sinatra/reloader'
-require 'thin'
+#!/usr/bin/env ruby
+require 'webrick'
+require 'webrick/https'
+require 'openssl'
 
-set :port, 80
-set :environment, :production
+CERT_PATH = File.join(Dir.home, 'certs')
 
-configure :production do
-  enable :reloader
-end
+webrick_options = {
+  :Port             => 80,
+  :DocumentRoot     => "/root/home/rise-server",
+  :SSLEnable        => true,
+  :SSLVerifyClient  => OpenSSL::SSL::VERIFY_NONE,
+  :SSLCertificate   => OpenSSL::X509::Certificate.new(File.read(File.join(CERT_PATH, 'cert.pem'))),
+  :SSLPrivateKey    => OpenSSL::PKey::RSA.new(File.read(File.join(CERT_PATH, 'privkey.pem'))),
+  :SSLCertName      => [[ 'US', WEBrick::Utils::getservername ]]
+}
 
-get '/:uuid/*' do |uuid, file|
-  if file.nil?
-    haml :dir_listing
-  end
-  File.read(File.join(Dir.home, 'rise-server', uuid, file))
-end
+WEBrick::HTTPServer.new(webrick_options).start
