@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.authors     = Rise::Constants::AUTHORS
   s.email       = Rise::Constants::EMAIL
   s.files       = `git ls-files`.split($/).reject { |file|
-      file =~ /^server|^spec/
+      file =~ /^server|^spec|^pkg/
     }
   s.homepage    =
     'http://rubygems.org/gems/rise-cli'
