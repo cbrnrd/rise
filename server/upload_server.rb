@@ -1,10 +1,12 @@
 #!/usr/bin/env ruby
+require 'sinatra'
+require 'sinatra/base'
+require 'thin'
+
+
 class UploadServer < Sinatra::Base
 
   # Sinatra requirements
-  require 'sinatra'
-  require 'sinatra/base'
-  require 'thin'
   require 'sinatra/namespace'
   require 'paint'
 
