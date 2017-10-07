@@ -1,7 +1,6 @@
 ##
 # This file handles all communication to the Upto servers
 ##
-require 'colorize'
 require 'rex/text'
 require 'uri'
 require 'json'

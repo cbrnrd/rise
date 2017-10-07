@@ -27,20 +27,21 @@ module Rise
       FileUtils.mkdir(RISE_DATA_DIR)
       FileUtils.mkdir(File.join(RISE_DATA_DIR, 'auth'))
 
+      #TODO Reimplement when the backend server actually works
       # Get the input from the user
-      print Paint['1. Log in\n2. Sign up\n  > ', :bold]
-      while (choice = gets.chomp!)
-        if choice == '1'
-          login
-          break
-        elsif choice == '2'
-          signup
-          break
-        else
-          puts Paint['Please type `1` or `2`', :red]
-          next
-        end
-      end
+      #print Paint['1. Log in\n2. Sign up\n  > ', :bold]
+      #while (choice = gets.chomp!)
+      #  if choice == '1'
+      #    login
+      #    break
+      #  elsif choice == '2'
+      #    signup
+      #    break
+      #  else
+      #    puts Paint['Please type `1` or `2`', :red]
+      #    next
+      #  end
+      #end
 
     end
 
