@@ -8,8 +8,13 @@ require 'core'
 options = {}
 OptionParser.new do |opts|
   opts.banner = "Usage: #{$PROGRAM_NAME} [options]"
+  opts.separator Paint["\nGeneral Options: ", '#95a5a6']
 
-  opts.separator Paint['\nGeneral Options: ', '#95a5a6']
+  opts.on('--version', 'Show the rise version and exit') do
+    puts "Rise version: #{Paint[Rise::Constants::VERSION, '#2ecc71']}"
+    exit 0
+  end
+
   opts.on('-v', '--verbose', 'Run verbosely') do |v|
     options[:verbose] = v
   end
@@ -26,7 +31,7 @@ end.parse!(ARGV)
 
 if Rise::Util.is_first_run?
   Rise::Util.setup
-  puts '\nPlease run the `rise` command again to upload your files.'
+  puts "\nPlease run the `rise` command again to upload your files."
   exit 0
 end
 
