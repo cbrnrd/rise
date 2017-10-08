@@ -3,15 +3,15 @@ require 'webrick'
 require 'webrick/https'
 require 'openssl'
 
-CERT_PATH = File.join(Dir.home, 'certs')
+#CERT_PATH = File.join(Dir.home, 'certs')
 
 webrick_options = {
-  :Port             => 80,
-  :DocumentRoot     => "/root/home/rise-server",
+  :Port             => 443,
+  :DocumentRoot     => "/root/rise-server",
   :SSLEnable        => true,
   :SSLVerifyClient  => OpenSSL::SSL::VERIFY_NONE,
-  :SSLCertificate   => OpenSSL::X509::Certificate.new(File.read(File.join(CERT_PATH, 'cert.pem'))),
-  :SSLPrivateKey    => OpenSSL::PKey::RSA.new(File.read(File.join(CERT_PATH, 'privkey.pem'))),
+  :SSLCertificate   => OpenSSL::X509::Certificate.new(File.read('/etc/letsencrypt/archive/rise.sh/cert1.pem')),
+  :SSLPrivateKey    => OpenSSL::PKey::RSA.new(File.read('/etc/letsencrypt/archive/rise.sh/privkey1.pem')),
   :SSLCertName      => [[ 'US', WEBrick::Utils::getservername ]]
 }
 
