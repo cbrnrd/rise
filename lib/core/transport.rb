@@ -1,10 +1,12 @@
 ##
 # This file handles all communication to the Upto servers
 ##
+require 'colorize'
 require 'rex/text'
 require 'uri'
 require 'json'
-require 'net/http'
+require 'http'
+
 module Rise
   module Transport
 
@@ -23,23 +25,22 @@ module Rise
       end
 
       def upload!(*)
-        upload_uri_base = "https://rise.sh:8080/api/v1/#{@uuid}"
-        access_uri = "https://rise.sh/#{@uuid}"
+        upload_uri_base = "http://rise.sh:8080/api/v1/#{@uuid}"
+        access_uri = "http://rise.sh/#{@uuid}"
         uri = ''
 
         # This sorts the files by (file path) length.
         # It is supposed to make the server make the first layer of files
         # before the rest of the layers.
         ordered_files = files.sort_by(&:length)
-        
         ordered_files.each do |f|
           isdir = File.directory?(f)
           final_path = File.absolute_path(f).gsub(File.expand_path(folder_path), '')
-          http = Net::HTTP.new(upload_uri_base, 8080)
+          uri = URI.parse("#{upload_uri_base}/#{final_path}?dir=#{isdir}")
           begin
-            http.send_request('PUT', "#{final_path}?dir=#{isdir}", File.read(f))
+            HTTP.put(uri.to_s, :body => File.read(f))
           rescue Errno::EISDIR
-            http.send_request('PUT', "#{final_path}?dir=#{isdir}", '')
+            HTTP.put(uri.to_s, :body => '')
             next
           end
         end
