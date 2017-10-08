@@ -34,6 +34,7 @@ PLATFORMS
   x64-mingw32
 
 DEPENDENCIES
+  daemons
   paint
   sinatra
   sinatra-contrib

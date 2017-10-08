@@ -2,6 +2,7 @@
 require 'webrick'
 require 'webrick/https'
 require 'openssl'
+require 'daemons'
 
 webrick_options = {
   :Port             => 443,
@@ -12,5 +13,18 @@ webrick_options = {
   :SSLPrivateKey    => OpenSSL::PKey::RSA.new(File.read('/etc/letsencrypt/archive/rise.sh/privkey1.pem')),
   :SSLCertName      => [[ 'US', WEBrick::Utils::getservername ]]
 }
+fork do
+  require 'sinatra'
+
+  set :port, 80
+  set :environment, :production
+  
+  puts "Starting redurect microservice with pid: #{Process.pid}"
+
+  get '*' do
+    redirect('https://rise.sh')
+  end
+
+end
 
 WEBrick::HTTPServer.new(webrick_options).start
