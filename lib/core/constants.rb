@@ -5,7 +5,7 @@ UPLOAD_PORT   = 8080.freeze
 
 module Rise
   module Constants
-    VERSION = '0.1.4'
+    VERSION = '0.1.5'
     EMAIL   = '0xCB@protonmail.com'
     AUTHORS = ['Carter Brainerd']
     NAME    = 'rise-cli'
