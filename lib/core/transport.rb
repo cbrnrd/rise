@@ -1,7 +1,6 @@
 ##
 # This file handles all communication to the Upto servers
 ##
-require 'colorize'
 require 'rex/text'
 require 'uri'
 require 'json'
@@ -26,7 +25,7 @@ module Rise
 
       def upload!(*)
         upload_uri_base = "http://rise.sh:8080/api/v1/#{@uuid}"
-        access_uri = "http://rise.sh/#{@uuid}"
+        access_uri = "https://rise.sh/#{@uuid}"
         uri = ''
 
         # This sorts the files by (file path) length.

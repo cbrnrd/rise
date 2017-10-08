@@ -20,8 +20,8 @@ fork do
 
   puts "[Redirect service] Starting redirect microservice with pid: #{Process.pid}"
 
-  get '*' do
-    redirect('https://rise.sh')
+  get '*' do |path|
+    redirect("https://rise.sh#{path}")
   end
 
 end
