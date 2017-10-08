@@ -2,11 +2,10 @@
 require 'webrick'
 require 'webrick/https'
 require 'openssl'
-require 'daemons'
 
 webrick_options = {
   :Port             => 443,
-  :DocumentRoot     => "/root/rise-server",
+  :DocumentRoot     => "/root/rise-server-public",
   :SSLEnable        => true,
   :SSLVerifyClient  => OpenSSL::SSL::VERIFY_NONE,
   :SSLCertificate   => OpenSSL::X509::Certificate.new(File.read('/etc/letsencrypt/archive/rise.sh/cert1.pem')),
@@ -18,8 +17,8 @@ fork do
 
   set :port, 80
   set :environment, :production
-  
-  puts "Starting redurect microservice with pid: #{Process.pid}"
+
+  puts "[Redirect service] Starting redirect microservice with pid: #{Process.pid}"
 
   get '*' do
     redirect('https://rise.sh')
