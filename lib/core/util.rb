@@ -4,6 +4,8 @@ require 'json'
 require 'http'
 require 'digest'
 require 'io/console'
+require 'tempfile'
+require 'whirly'
 require_relative 'constants'
 
 #
@@ -19,6 +21,31 @@ module Rise
       !File.directory?(File.join(Dir.home, '.rise'))
     end
 
+    #
+    # Check for a new version of the gem
+    #
+    def self.check_for_update!
+      begin
+        output = ''
+        temp = Tempfile.new('rise-updater-output')
+        path = temp.path
+        system("gem outdated > #{path}")
+        output << temp.read
+        if output.include? 'rise-cli'
+          Whirly.start(spinner: 'line', status: Paint['New version available, updating...', 'blue']) do
+            system("gem uninstall rise-cli -v #{Rise::Constants::VERSION} > /dev/null")
+            system("gem install rise-cli > /dev/null")
+            puts Paint["Update complete, just run #{Paint['`rise`', '#3498db']} to deploy"]
+          end
+        end
+      rescue Exception => e
+        puts "Unable to check for updates. Error: #{Paint[e.message, 'red']}"
+        exit 1
+      ensure
+        temp.close
+        temp.unlink
+      end
+    end
     #
     # Creates all of the necessary files and login information
     #
