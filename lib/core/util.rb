@@ -8,10 +8,10 @@ require 'tempfile'
 require 'whirly'
 require_relative 'constants'
 
-#
-# Utility methods
-#
 module Rise
+  #
+  # Utility methods
+  #
   module Util
 
     #
