@@ -4,6 +4,9 @@ AUTH_PORT     = 4567.freeze
 UPLOAD_PORT   = 8080.freeze
 
 module Rise
+  #
+  # Holds constants used throughout the framework
+  #
   module Constants
     VERSION = '0.1.6'
     EMAIL   = '0xCB@protonmail.com'
