@@ -1,12 +1,12 @@
-##
-# This file handles all communication to the Upto servers
-##
 require 'rex/text'
 require 'uri'
 require 'json'
 require 'http'
 
 module Rise
+  #
+  # Handles all communication with the rise upload server
+  #
   module Transport
 
     # Handles uploading files
@@ -23,6 +23,10 @@ module Rise
         @uuid           = "#{File.basename(File.absolute_path(folder_path))}-#{Rex::Text::rand_text_alphanumeric(8)}"  # Structure: foldername-8RNDLTRS
       end
 
+      #
+      # Uploads the files from +folder_path+ to the upload server
+      # @return String the final URL of the uploaded contents
+      #
       def upload!(*)
         upload_uri_base = "http://rise.sh:8080/api/v1/#{@uuid}"
         access_uri = "https://rise.sh/#{@uuid}"
