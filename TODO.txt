@@ -1,3 +1,4 @@
 TODO things for rise:
   * FIX THE DAMN AUTH ARCHITECTURE SO IT WORKS DAMN IT
   * Add a .keyfile to each upload containing a private key. This file will be used to make sure that the same uuid can't be uploaded to twice and for a future file deletion method.
+  * Limit uploads to 50MB
