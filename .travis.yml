@@ -5,4 +5,4 @@ rvm:
 
 script:
   - bundle && bundle install
-#  - rubocop --fail-level W
+  - bundle exec rubocop --fail-level W
