@@ -34,7 +34,7 @@ OptionParser.new do |opts|
   end
 end.parse!(ARGV)
 
-if Rise::Util.is_first_run?
+if Rise::Util.first_run?
   Rise::Util.setup
   puts "\nPlease run the `rise` command again to upload your files."
   exit 0
