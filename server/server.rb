@@ -4,13 +4,13 @@ require 'webrick/https'
 require 'openssl'
 
 webrick_options = {
-  :Port             => 443,
-  :DocumentRoot     => "/root/rise-server-public",
-  :SSLEnable        => true,
-  :SSLVerifyClient  => OpenSSL::SSL::VERIFY_NONE,
-  :SSLCertificate   => OpenSSL::X509::Certificate.new(File.read('/etc/letsencrypt/archive/rise.sh/cert1.pem')),
-  :SSLPrivateKey    => OpenSSL::PKey::RSA.new(File.read('/etc/letsencrypt/archive/rise.sh/privkey1.pem')),
-  :SSLCertName      => [[ 'US', WEBrick::Utils::getservername ]]
+  Port:            443,
+  DocumentRoot:    '/root/rise-server-public',
+  SSLEnable:       true,
+  SSLVerifyClient: OpenSSL::SSL::VERIFY_NONE,
+  SSLCertificate:  OpenSSL::X509::Certificate.new(File.read('/etc/letsencrypt/archive/rise.sh/cert1.pem')),
+  SSLPrivateKey:   OpenSSL::PKey::RSA.new(File.read('/etc/letsencrypt/archive/rise.sh/privkey1.pem')),
+  SSLCertName:     [['US', WEBrick::Utils.getservername]]
 }
 
 fork do
@@ -24,7 +24,6 @@ fork do
   get '*' do |path|
     redirect("https://rise.sh#{path}")
   end
-
 end
 
 WEBrick::HTTPServer.new(webrick_options).start
