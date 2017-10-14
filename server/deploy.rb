@@ -17,7 +17,7 @@ class Deploy
     end
   end
 
-  def init(directory: false, uuid:, path:)
+  def initialize(directory: false, uuid:, path:)
     @directory = directory.to_s === 'true'
     @uuid      = uuid
     @path      = path
