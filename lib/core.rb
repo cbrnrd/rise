@@ -1,6 +1,5 @@
 # Gems
 require 'clipboard'
-require 'whirly'
 require 'rex/text'
 require 'optparse'
 

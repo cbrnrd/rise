@@ -8,14 +8,24 @@ require 'core'
 options = {}
 OptionParser.new do |opts|
   opts.banner = "Usage: #{$PROGRAM_NAME} [options]"
+  opts.separator Paint["\nGeneral Options: ", '#95a5a6']
 
-  opts.separator Paint['\nGeneral Options: ', '#95a5a6']
+  opts.on('--version', 'Show the rise version and exit') do
+    puts "Rise version: #{Paint[Rise::Constants::VERSION, '#2ecc71']}"
+    exit 0
+  end
+
   opts.on('-v', '--verbose', 'Run verbosely') do |v|
     options[:verbose] = v
   end
   # directory flag
   opts.on('-d DIR', '--dir DIR', String, 'Upload files in DIR') do |d|
     options[:directory] = d unless d.nil?
+  end
+
+  opts.on('-u', '--update', 'Check if rise has a newer version and install it') do
+    Rise::Util.check_for_update!
+    exit 0
   end
 
   opts.on('-h', '--help', 'Show this help message') do
@@ -26,10 +36,10 @@ end.parse!(ARGV)
 
 if Rise::Util.is_first_run?
   Rise::Util.setup
-  puts '\nPlease run the `rise` command again to upload your files.'
+  puts "\nPlease run the `rise` command again to upload your files."
   exit 0
 end
-
+Rise::Util.check_for_update!
 result_url = ''
 uploader = Rise::Transport::Uploader.new(options[:directory]) unless options[:directory].nil?
 uploader = Rise::Transport::Uploader.new(Dir.pwd) if options[:directory].nil?
