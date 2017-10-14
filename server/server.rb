@@ -12,6 +12,7 @@ webrick_options = {
   :SSLPrivateKey    => OpenSSL::PKey::RSA.new(File.read('/etc/letsencrypt/archive/rise.sh/privkey1.pem')),
   :SSLCertName      => [[ 'US', WEBrick::Utils::getservername ]]
 }
+
 fork do
   require 'sinatra'
 
