@@ -66,6 +66,7 @@ DEPENDENCIES
   paint
   rex-text
   rspec
+  rspec-core
   rubocop
   whirly
 
