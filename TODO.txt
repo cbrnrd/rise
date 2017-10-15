@@ -3,3 +3,4 @@ TODO things for rise:
   * Add a .keyfile to each upload containing a private key. This file will be used to make sure that the same uuid can't be uploaded to twice and for a future file deletion method.
   * Add said file deletion method
   * Limit uploads to 50MB
+  * Add GZIP file uploads
