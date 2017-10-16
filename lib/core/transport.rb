@@ -10,8 +10,8 @@ module Rise
   module Transport
     # Handles uploading files
     class Uploader
-      attr_reader :folder_path, :total_files, :include_folder, :total_files_size
-      attr_reader :uuid, :current_file
+      attr_reader :folder_path, :total_files, :include_folder
+      attr_reader :uuid, :current_file, :total_files_size
       attr_accessor :files
 
       def initialize(folder_path, include_folder = true)
