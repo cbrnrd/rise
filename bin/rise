@@ -34,7 +34,7 @@ OptionParser.new do |opts|
   end
 end.parse!(ARGV)
 
-if Rise::Util.is_first_run?
+if Rise::Util.first_run?
   Rise::Util.setup
   puts "\nPlease run the `rise` command again to upload your files."
   exit 0
@@ -48,17 +48,16 @@ if uploader.total_files_size > 50.megabytes
   exit 0
 end
 
-
 puts Paint['Thanks for using Rise! Your local source for serverless deployment!', '#95a5a6']
 
 Whirly.start(spinner: 'dots', status: "Uploading files (#{uploader.total_files} total files)") do
   beginning_time = Time.now
-  result_url = uploader.upload!(options[:verbose])  # Do the file upload
+  result_url = uploader.upload!(options[:verbose]) # Do the file upload
 
   Whirly.status = 'Done!\n'
   Clipboard.copy(result_url)
   print Paint["Your url is: #{result_url} (copied to clipboard) ", :bold]
-  puts Paint["[#{((Time.now - beginning_time)).round(2)}s]", "#95a5a6"]
+  puts Paint["[#{((Time.now - beginning_time)).round(2)}s]", '#95a5a6']
 
   puts Paint['Deployment successful!', '#3498db']
 end

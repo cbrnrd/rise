@@ -5,17 +5,16 @@ require 'core'
 Gem::Specification.new do |s|
   s.name        = Rise::Constants::NAME
   s.version     = Rise::Constants::VERSION
-  s.executables = ['rise', 'setup', 'console']
+  s.executables = %w[rise setup console]
   s.date        = Time.now.strftime('%Y-%m-%d')
-  s.summary     = "Simple serverless website deployment"
+  s.summary     = 'Simple serverless website deployment'
   s.authors     = Rise::Constants::AUTHORS
   s.email       = Rise::Constants::EMAIL
   s.files       = `git ls-files`.split($/).reject { |file|
-      file =~ /^server|^spec|^pkg/
-    }
-  s.homepage    =
-    'http://rubygems.org/gems/rise-cli'
-  s.license       = 'MIT'
+    file =~ /^server|^spec|^pkg/
+  }
+  s.homepage    = 'http://rubygems.org/gems/rise-cli'
+  s.license     = 'MIT'
 
   s.add_runtime_dependency 'clipboard'
   s.add_runtime_dependency 'http'
