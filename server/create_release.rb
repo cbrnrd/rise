@@ -2,7 +2,7 @@
 require 'fileutils'
 require 'paint'
 
-class Deploy
+class CreateRelease
   PUBLIC_FOLDER = File.join(Dir.home, 'rise-server-public').freeze
 
   FileUtils.mkdir(PUBLIC_FOLDER) if !File.directory?(PUBLIC_FOLDER)
@@ -10,10 +10,10 @@ class Deploy
   attr_accessor :directory, :uuid, :path
 
   class << self
-    def create(directory: false, uuid:, path:)
+    def run(directory: false, uuid:, path:)
       service = self.new(directory: directory, uuid: uuid, path: path)
       return FileUtils.mkdir(File.join(PUBLIC_FOLDER, uuid, path)) if service.directory
-      service.create!
+      service.run
     end
   end
 
@@ -31,7 +31,7 @@ class Deploy
     end
   end
 
-  def create!
+  def run
     File.open(File.join(PUBLIC_FOLDER, uuid, path), 'w+') do |f|
       request_body = request.body.read
       f.puts(request_body)
