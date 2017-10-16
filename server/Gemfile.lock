@@ -1,9 +1,9 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    backports (3.8.0)
+    backports (3.10.0)
+    daemons (1.2.4)
     eventmachine (1.2.5)
-    eventmachine (1.2.5-x64-mingw32)
     multi_json (1.12.2)
     mustermann (1.0.1)
     paint (2.0.0)
@@ -30,7 +30,6 @@ GEM
 
 PLATFORMS
   ruby
-  x64-mingw32
 
 DEPENDENCIES
   paint
