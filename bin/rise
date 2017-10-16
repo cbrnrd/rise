@@ -43,8 +43,8 @@ Rise::Util.check_for_update!
 result_url = ''
 uploader = Rise::Transport::Uploader.new(options[:directory] || Dir.pwd)
 
-if uploader.total_files_size > 52428800
-  puts Paint["Max file size reached (#{uploader.total_files_size} > 52428800)", '#FF0000']
+if uploader.total_files_size > 50.megabytes
+  puts Paint["Max file size reached (#{uploader.total_files_size})", '#FF0000']
   exit 0
 end
 
