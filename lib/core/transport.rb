@@ -8,20 +8,19 @@ module Rise
   # Handles all communication with the rise upload server
   #
   module Transport
-
     # Handles uploading files
     class Uploader
-
-      attr_reader :folder_path, :total_files, :include_folder, :uuid, :current_file, :total_files_size
+      attr_reader :folder_path, :total_files, :include_folder, :total_files_size
+      attr_reader :uuid, :current_file
       attr_accessor :files
 
-      def initialize(folder_path, include_folder=true)
+      def initialize(folder_path, include_folder = true)
         @folder_path      = folder_path
         @files            = Dir.glob("#{File.absolute_path(folder_path)}/**/*")
         @total_files      = @files.length
         @total_files_size = calculate_files_size
         @include_folder   = include_folder
-        @uuid             = "#{File.basename(File.absolute_path(folder_path))}-#{Rex::Text::rand_text_alphanumeric(8)}"  # Structure: foldername-8RNDLTRS
+        @uuid             = "#{File.basename(File.absolute_path(folder_path))}-#{Rex::Text.rand_text_alphanumeric(8)}" # Structure: foldername-8RNDLTRS
       end
 
       #
@@ -39,16 +38,17 @@ module Rise
         ordered_files = files.sort_by(&:length)
         ordered_files.each do |f|
           isdir = File.directory?(f)
-          final_path = File.absolute_path(f).gsub(File.expand_path(folder_path), '')
+          final_path = File.absolute_path(f).gsub(
+            File.expand_path(folder_path), '')
           uri = URI.parse("#{upload_uri_base}/#{final_path}?dir=#{isdir}")
           begin
-            HTTP.put(uri.to_s, :body => File.read(f))
+            HTTP.put(uri.to_s, body: File.read(f))
           rescue Errno::EISDIR
-            HTTP.put(uri.to_s, :body => '')
+            HTTP.put(uri.to_s, body: '')
             next
           end
         end
-        return access_uri
+        access_uri
       end
 
       private
