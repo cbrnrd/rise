@@ -11,15 +11,16 @@ module Rise
     # Handles uploading files
     class Uploader
       attr_reader :folder_path, :total_files, :include_folder
-      attr_reader :uuid, :current_file
+      attr_reader :uuid, :current_file, :total_files_size
       attr_accessor :files
 
       def initialize(folder_path, include_folder = true)
-        @folder_path    = folder_path
-        @files          = Dir.glob("#{File.absolute_path(folder_path)}/**/*")
-        @total_files    = @files.length
-        @include_folder = include_folder
-        @uuid           = "#{File.basename(File.absolute_path(folder_path))}-#{Rex::Text.rand_text_alphanumeric(8)}" # Structure: foldername-8RNDLTRS
+        @folder_path      = folder_path
+        @files            = Dir.glob("#{File.absolute_path(folder_path)}/**/*")
+        @total_files      = @files.length
+        @total_files_size = calculate_files_size
+        @include_folder   = include_folder
+        @uuid             = "#{File.basename(File.absolute_path(folder_path))}-#{Rex::Text.rand_text_alphanumeric(8)}" # Structure: foldername-8RNDLTRS
       end
 
       #
@@ -48,6 +49,12 @@ module Rise
           end
         end
         access_uri
+      end
+
+      private
+
+      def calculate_files_size
+        @files.inject(0){|sum, file| sum + File.size(file)}
       end
     end
   end

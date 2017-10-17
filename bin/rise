@@ -41,8 +41,12 @@ if Rise::Util.first_run?
 end
 Rise::Util.check_for_update!
 result_url = ''
-uploader = Rise::Transport::Uploader.new(options[:directory]) unless options[:directory].nil?
-uploader = Rise::Transport::Uploader.new(Dir.pwd) if options[:directory].nil?
+uploader = Rise::Transport::Uploader.new(options[:directory] || Dir.pwd)
+
+if uploader.total_files_size > 52428800
+  puts Paint["Max file size reached (#{uploader.total_files_size} > 50MB)", '#FF0000']
+  exit 0
+end
 
 puts Paint['Thanks for using Rise! Your local source for serverless deployment!', '#95a5a6']
 
