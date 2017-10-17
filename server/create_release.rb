@@ -7,20 +7,21 @@ class CreateRelease
 
   FileUtils.mkdir(PUBLIC_FOLDER) if !File.directory?(PUBLIC_FOLDER)
 
-  attr_accessor :directory, :uuid, :path
+  attr_accessor :directory, :uuid, :path, :request
 
   class << self
-    def run(directory: false, uuid:, path:)
-      service = self.new(directory: directory, uuid: uuid, path: path)
+    def run(directory: false, uuid:, path:, req:)
+      service = self.new(directory: directory, uuid: uuid, path: path, req: req)
       return FileUtils.mkdir(File.join(PUBLIC_FOLDER, uuid, path)) if service.directory
       service.run
     end
   end
 
-  def initialize(directory: false, uuid:, path:)
+  def initialize(directory: false, uuid:, path:, req:)
     @directory = directory.to_s === 'true'
     @uuid      = uuid
     @path      = path
+    @request   = req
     create_base_folder
   end
 
