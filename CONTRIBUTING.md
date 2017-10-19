@@ -20,6 +20,7 @@ should generally be followed.
   * **Do** `require` your new file in `lib/core.rb` and place the file in `lib/core/`if you are adding new library code.
   * **Don't** leave your pull request descriptions blank.
   * **Don't** go radio silent on pull requests, try to reply fast so we can land your code quicker
+  * **Dont't get agitated if your request is not accepted.
 
 
 [Ruby style guide]:https://github.com/bbatsov/ruby-style-guide
