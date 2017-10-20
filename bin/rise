@@ -6,8 +6,9 @@
 require 'core'
 
 options = {}
+options[:open] = false
 OptionParser.new do |opts|
-  opts.banner = "Usage: #{$PROGRAM_NAME} [options]"
+  opts.banner = "Usage: #{$PROGRAM_NAME} [options]\nRise version: #{Rise::Constants::VERSION}"
   opts.separator Paint["\nGeneral Options: ", '#95a5a6']
 
   opts.on('--version', 'Show the rise version and exit') do
@@ -26,6 +27,10 @@ OptionParser.new do |opts|
   opts.on('-u', '--update', 'Check if rise has a newer version and install it') do
     Rise::Util.check_for_update!
     exit 0
+  end
+
+  opts.on('-o', '--open', 'Open the deployment in a browser if possible') do
+    options[:open] = true
   end
 
   opts.on('-h', '--help', 'Show this help message') do
@@ -60,4 +65,6 @@ Whirly.start(spinner: 'dots', status: "Uploading files (#{uploader.total_files} 
   puts Paint["[#{((Time.now - beginning_time)).round(2)}s]", '#95a5a6']
 
   puts Paint['Deployment successful!', '#3498db']
+
+  Rise::Util.open_deployment_in_browser(result_url) if options[:open]
 end

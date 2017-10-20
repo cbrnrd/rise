@@ -6,6 +6,7 @@ require 'digest'
 require 'io/console'
 require 'tempfile'
 require 'whirly'
+require 'os'
 require_relative 'constants'
 
 module Rise
@@ -71,5 +72,17 @@ module Rise
       #   end
       # end
     end
+
+    #
+    # Opens +url+ in a web browser if possible
+    #
+    def open_deployment_in_browser(url)
+      if OS.windows?
+        system("START \"\" \"#{url}\"")
+      else
+        system("open #{url}")
+      end
+    end
+
   end
 end
