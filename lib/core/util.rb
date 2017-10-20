@@ -4,8 +4,8 @@ require 'json'
 require 'http'
 require 'digest'
 require 'io/console'
-require 'tempfile'
 require 'whirly'
+require 'json'
 require_relative 'constants'
 
 module Rise
@@ -24,12 +24,8 @@ module Rise
     # Check for a new version of the gem
     #
     def self.check_for_update!
-      output = ''
-      temp = Tempfile.new('rise-updater-output')
-      path = temp.path
-      system("gem outdated > #{path}")
-      output << temp.read
-      if output.include? 'rise-cli'
+      current_version = JSON.parse(HTTP.get('https://rubygems.org/api/v1/versions/rise.cli/latest.json'))['version']
+      if current_version != Rise::Constants::VERSION
         Whirly.start(
           spinner: 'line',
           status: Paint['New version available, updating...', 'blue']
