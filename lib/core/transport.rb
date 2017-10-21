@@ -51,7 +51,7 @@ module Rise
         access_uri
       end
 
-      private
+      protected
 
       def calculate_files_size
         @files.inject(0){|sum, file| sum + File.size(file)}

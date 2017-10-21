@@ -8,9 +8,10 @@ module Rise
   # Holds constants used throughout the framework
   #
   module Constants
-    VERSION = '0.1.9'.freeze
-    EMAIL   = '0xCB@protonmail.com'.freeze
-    AUTHORS = ['Carter Brainerd']
-    NAME    = 'rise-cli'.freeze
+    VERSION  = '0.1.9'.freeze
+    EMAIL    = '0xCB@protonmail.com'.freeze
+    AUTHORS  = ['Carter Brainerd']
+    NAME     = 'rise-cli'.freeze
+    RISE_DIR = File.join(File.dirname(__FILE__), '..', '..')
   end
 end
