@@ -22,10 +22,26 @@ module Rise
     end
 
     #
+    # 1 = git, 2 = gem, 3 = unknown
+    #
+    def self.git_or_gem
+      gem = nil
+      1 if File.exist?(File.join(Rise::Constants::VERSION, '.git'))
+      if OS.windows?
+        gem = system('which gem > NUL')
+      else
+        gem = system('which gem > /dev/null')
+      end
+
+      2 if gem == true
+      3
+    end
+
+    #
     # Check for a new version of the gem
     #
     def self.check_for_update!
-      src = git_or_gem
+      src = Rise::Util.git_or_gem
       begin
         if src == 2  # if the gem was downloaded from rubygems
           current_version = JSON.parse(HTTP.get('https://rubygems.org/api/v1/versions/rise-cli/latest.json'))['version']
@@ -88,26 +104,6 @@ module Rise
         system("open #{url}")
       end
     end
-
-
-
-    protected
-    #
-    # 1 = git, 2 = gem, 3 = unknown
-    #
-    def git_or_gem
-      gem = nil
-      1 if File.exist?(File.join(Rise::Constants::VERSION, '.git'))
-      if OS.windows?
-        gem = system('which gem > NUL')
-      else
-        gem = system('which gem > /dev/null')
-      end
-
-      2 if gem == true
-      3
-    end
-
 
   end
 end
