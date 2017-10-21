@@ -5,7 +5,7 @@ require 'core'
 Gem::Specification.new do |s|
   s.name        = Rise::Constants::NAME
   s.version     = Rise::Constants::VERSION
-  s.executables = %w[rise setup console]
+  s.executables = %w[rise]
   s.date        = Time.now.strftime('%Y-%m-%d')
   s.summary     = 'Simple serverless website deployment'
   s.authors     = Rise::Constants::AUTHORS
