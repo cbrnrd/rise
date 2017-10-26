@@ -2,7 +2,7 @@ require 'fileutils'
 require 'paint'
 require 'json'
 require 'http'
-require 'digest'
+require 'bcrypt'
 require 'io/console'
 require 'whirly'
 require 'os'
@@ -73,25 +73,28 @@ module Rise
     # Creates all of the necessary files and login information
     #
     def self.setup
-      puts Paint['Detected first time run, creating necessary files...', :blue]
+      puts Paint['Detected first time setup, creating necessary files...', :blue]
       FileUtils.mkdir(RISE_DATA_DIR)
       FileUtils.mkdir(File.join(RISE_DATA_DIR, 'auth'))
 
-      # TODO: Reimplement when the backend server actually works
-      #  Get the input from the user
-      # print Paint['1. Log in\n2. Sign up\n  > ', :bold]
-      # while (choice = gets.chomp!)
-      #   if choice == '1'
-      #     login
-      #     break
-      #   elsif choice == '2'
-      #     signup
-      #     break
-      #   else
-      #     puts Paint['Please type `1` or `2`', :red]
-      #     next
-      #   end
-      # end
+      puts Paint['Create a password to secure your uploads.', :bold]
+      pw = signup
+      while pw.length < 9
+        puts Paint['Password not long enough,
+          it has to be longer than 8 characters', :red]
+          pw = signup
+      end
+      File.open(File.join(RISE_DATA_DIR, 'auth', 'creds.json')) do |f|
+        creds_hash = { 'hash' => BCrypt::Password.new(pw) }
+        f.puts(JSON.pretty_generate(creds_hash))
+      end
+    end
+
+    private
+
+    def signup
+      print 'Password: '
+      STDIN.noecho(&:gets)
     end
 
     #
