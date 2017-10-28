@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-gem 'bcrypt'
+gem 'bcrypt', platforms: :ruby
 gem 'clipboard'
 gem 'http'
 gem 'os'
