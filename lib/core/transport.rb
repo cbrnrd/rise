@@ -14,13 +14,18 @@ module Rise
       attr_reader :uuid, :current_file, :total_files_size
       attr_accessor :files
 
-      def initialize(folder_path, include_folder = true)
+      def initialize(folder_path, excluded_files = [], include_folder = true)
+        excluded_files.map! do |a|
+          File.join(File.absolute_path(folder_path), a)
+        end
         @folder_path      = folder_path
         @files            = Dir.glob("#{File.absolute_path(folder_path)}/**/*")
+        @files           -= excluded_files
         @total_files      = @files.length
         @total_files_size = calculate_files_size
         @include_folder   = include_folder
-        @uuid             = "#{File.basename(File.absolute_path(folder_path))}-#{Rex::Text.rand_text_alphanumeric(8)}" # Structure: foldername-8RNDLTRS
+        @uuid             = "#{File.basename(File.absolute_path(folder_path)).gsub('_', '-')}-#{Rex::Text.rand_text_alphanumeric(8)}" # Structure: foldername-8RNDLTRS
+        puts @files
       end
 
       #
@@ -40,7 +45,7 @@ module Rise
           isdir = File.directory?(f)
           final_path = File.absolute_path(f).gsub(
             File.expand_path(folder_path), '')
-          uri = URI.parse("#{upload_uri_base}/#{final_path}?dir=#{isdir}")
+          uri = URI.parse("#{upload_uri_base}/#{final_path.gsub(' ', '')}?dir=#{isdir}")
           begin
             HTTP.put(uri.to_s, body: File.read(f))
           rescue Errno::EISDIR

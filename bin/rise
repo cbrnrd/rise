@@ -1,36 +1,41 @@
 #!/usr/bin/env ruby
-
+$LOAD_PATH.unshift(File.expand_path(File.join('..', 'lib'))) unless $LOAD_PATH.include?(File.expand_path(File.join('..', 'lib')))
 # TODO
 # => Try to fix spinner bug on Windows (may be a weird interaction with \r)
-
 require 'core'
 
 options = {}
 options[:open] = false
+options[:ignore_files] = nil
 OptionParser.new do |opts|
   opts.banner = "Usage: #{$PROGRAM_NAME} [options]\nRise version: #{Rise::Constants::VERSION}"
   opts.separator Paint["\nGeneral Options: ", '#95a5a6']
 
-  opts.on('--version', 'Show the rise version and exit') do
+  opts.on('-d DIR', '--dir DIR', String, 'Upload files in DIR') do |d|
+    options[:directory] = d unless d.nil?
+  end
+
+  opts.on('-v', '--version', 'Show the rise version and exit') do
     puts "Rise version: #{Paint[Rise::Constants::VERSION, '#2ecc71']}"
     exit 0
   end
 
-  opts.on('-v', '--verbose', 'Run verbosely') do |v|
+  opts.on('--verbose', 'Run verbosely') do |v|
     options[:verbose] = v
   end
-  # directory flag
-  opts.on('-d DIR', '--dir DIR', String, 'Upload files in DIR') do |d|
-    options[:directory] = d unless d.nil?
+
+  opts.on('-i', '--ignore FILES', Array, 'Ignore the given files in the upload. These will be ignored if there is a .riseignore file.') do |a|
+    options[:ignored_files] = a unless a.nil?
+    puts "Reminder: You can add the files to .riseignore instead of using the -i flag"
+  end
+
+  opts.on('-o', '--open', 'Open the deployment in a browser if possible') do
+    options[:open] = true
   end
 
   opts.on('-u', '--update', 'Check if rise has a newer version and install it') do
     Rise::Util.check_for_update!
     exit 0
-  end
-
-  opts.on('-o', '--open', 'Open the deployment in a browser if possible') do
-    options[:open] = true
   end
 
   opts.on('-h', '--help', 'Show this help message') do
@@ -39,14 +44,24 @@ OptionParser.new do |opts|
   end
 end.parse!(ARGV)
 
+
 if Rise::Util.first_run?
   Rise::Util.setup
   puts "\nPlease run the `rise` command again to upload your files."
   exit 0
 end
 Rise::Util.check_for_update!
+dir = options[:directory] || Dir.pwd
+ignored = nil
 result_url = ''
-uploader = Rise::Transport::Uploader.new(options[:directory] || Dir.pwd)
+
+begin
+  ignored = File.read(File.join(dir, '.riseignore')).split("\n").map { |a| a.gsub!(' ', '')}
+rescue Errno::ENOENT
+  ignored = options[:ignored_files]
+end
+
+uploader = Rise::Transport::Uploader.new(dir, ignored)
 
 if uploader.total_files_size > 52428800
   puts Paint["Max file size reached (#{uploader.total_files_size} > 50MB)", '#FF0000']
