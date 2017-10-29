@@ -90,8 +90,6 @@ module Rise
       end
     end
 
-    private
-
     def signup
       print 'Password: '
       STDIN.noecho(&:gets)
