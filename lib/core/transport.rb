@@ -17,7 +17,7 @@ module Rise
       def initialize(folder_path, excluded_files = [], include_folder = true)
         excluded_files.map! do |a|
           File.join(File.absolute_path(folder_path), a)
-        end
+        end unless excluded_files == []
         @folder_path      = folder_path
         @files            = Dir.glob("#{File.absolute_path(folder_path)}/**/*")
         @files           -= excluded_files
