@@ -18,6 +18,6 @@ RSpec.describe Rise::Constants do
   end
 
   it "bcrypt installation is OK" do
-    expect(BCrypt::Password.create('password')).to eq('$2a$10$JxM8RWjXRgUbsPjNO73D/OJ3U8IY7hADwBBeHA1k3SqPkAO79xGNK')
+    expect(BCrypt::Password.create('password').at(0..6)).to eq('$2a$10$')
   end
 end
