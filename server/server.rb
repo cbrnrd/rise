@@ -18,11 +18,21 @@ fork do
 
   set :port, 80
   set :environment, :production
+  set :logging, false
 
-  puts "[Redirect service] Starting redirect microservice with pid: #{Process.pid}"
+  puts "\n[Redirect service] Starting redirect microservice with pid: #{Process.pid}"
 
   get '*' do |path|
     redirect("https://rise.sh#{path}")
+  end
+end
+
+module WEBrick
+  class HTTPResponse
+    def create_error_page
+      self.body = File.read('/root/rise-server-public/templates/error.html')
+      self.body.gsub!('404', self.status.to_s)
+    end
   end
 end
 
