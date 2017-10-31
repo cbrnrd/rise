@@ -19,7 +19,7 @@ OptionParser.new do |opts|
     exit 0
   end
 
-  opts.on('--verbose', 'Run verbosely') do |v|
+  opts.on('--verbose', 'Run verbosely') do
     ENV['RISE_VERBOSE'] = 'yes'
   end
 
