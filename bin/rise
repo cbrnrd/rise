@@ -1,12 +1,11 @@
 #!/usr/bin/env ruby
 $LOAD_PATH.unshift(File.expand_path(File.join('..', 'lib'))) unless $LOAD_PATH.include?(File.expand_path(File.join('..', 'lib')))
-# TODO
-# => Try to fix spinner bug on Windows (may be a weird interaction with \r)
 require 'core'
 
 options = {}
 options[:open] = false
 options[:ignore_files] = nil
+# TODO: convert the tasks to use thor or Rex::Parser::Arguments from 'rex'
 OptionParser.new do |opts|
   opts.banner = "Usage: #{$PROGRAM_NAME} [options]\nRise version: #{Rise::Constants::VERSION}"
   opts.separator Paint["\nGeneral Options: ", '#95a5a6']
@@ -21,7 +20,7 @@ OptionParser.new do |opts|
   end
 
   opts.on('--verbose', 'Run verbosely') do |v|
-    options[:verbose] = v
+    ENV['RISE_VERBOSE'] = 'yes'
   end
 
   opts.on('-i', '--ignore FILES', Array, 'Ignore the given files in the upload. These will be ignored if there is a .riseignore file.') do |a|
@@ -42,6 +41,14 @@ OptionParser.new do |opts|
     puts opts
     exit
   end
+
+  opts.separator Paint["\nTasks: ", '#95a5a6']
+  opts.on('--init', 'Reinitialize your password hash. (You will lose you old hash FOREVER)') do
+    Rise::Util.setup(false)
+    puts "\nPlease run the `rise` command again to upload your files using your new password."
+    exit 0
+  end
+
 end.parse!(ARGV)
 
 

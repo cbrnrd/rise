@@ -17,15 +17,14 @@ module Rise
       def initialize(folder_path, excluded_files = [], include_folder = true)
         excluded_files.map! do |a|
           File.join(File.absolute_path(folder_path), a)
-        end unless excluded_files == []
+        end unless excluded_files.nil?
         @folder_path      = folder_path
         @files            = Dir.glob("#{File.absolute_path(folder_path)}/**/*")
-        @files           -= excluded_files
+        @files           -= excluded_files unless excluded_files.nil?
         @total_files      = @files.length
         @total_files_size = calculate_files_size
         @include_folder   = include_folder
         @uuid             = "#{File.basename(File.absolute_path(folder_path)).gsub('_', '-')}-#{Rex::Text.rand_text_alphanumeric(8)}" # Structure: foldername-8RNDLTRS
-        puts @files
       end
 
       #

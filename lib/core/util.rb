@@ -72,27 +72,31 @@ module Rise
     #
     # Creates all of the necessary files and login information
     #
-    def self.setup
-      puts Paint['Detected first time setup, creating necessary files...', :blue]
-      FileUtils.mkdir(RISE_DATA_DIR)
-      FileUtils.mkdir(File.join(RISE_DATA_DIR, 'auth'))
+    def self.setup(first = true)
+      if first
+        puts Paint['Detected first time setup, creating necessary files...', :blue]
+        FileUtils.mkdir(RISE_DATA_DIR)
+        FileUtils.mkdir(File.join(RISE_DATA_DIR, 'auth'))
+      end
 
       puts Paint['Create a password to secure your uploads.', :bold]
-      pw = signup
-      while pw.length < 9
+      pw = Rise::Util.signup
+      while true
+        break if pw.length > 8
         puts Paint['Password not long enough,
           it has to be longer than 8 characters', :red]
-          pw = signup
+          pw = Rise::Util.signup
       end
-      File.open(File.join(RISE_DATA_DIR, 'auth', 'creds.json')) do |f|
-        creds_hash = { 'hash' => BCrypt::Password.new(pw) }
+      File.open(File.join(RISE_DATA_DIR, 'auth', 'creds.json'), 'w') do |f|
+        vputs('Writing hash to creds.json...')
+        creds_hash = { 'hash' => BCrypt::Password.create(pw) }
         f.puts(JSON.pretty_generate(creds_hash))
       end
     end
 
-    def signup
+    def self.signup
       print 'Password: '
-      STDIN.noecho(&:gets)
+      STDIN.noecho(&:gets).chomp
     end
 
     #
