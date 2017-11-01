@@ -50,18 +50,15 @@ module Rise
               spinner: 'line',
               status: "New version available (#{Paint[Rise::Constants::VERSION, 'red']} -> #{Paint[current_version, '#3498db']}), updating..."
             ) do
-              system("gem uninstall rise-cli -v #{Rise::Constants::VERSION} > /dev/null")
-              system("gem install rise-cli > /dev/null")
+              system("gem install rise-cli")
               puts Paint["Update complete, just run #{Paint['`rise`', '#3498db']} to deploy"]
             end
           end
         elsif src == 1
-          if `git log HEAD..origin/master --oneline` != ''
-            puts "It seems you're on bleeding edge, fetching new changes..."
-            vputs("Updating from #{`git show --no-color --oneline -s`.split(' ')[0]} to #{`git rev-parse --short HEAD`}")
-            `git pull`
-            puts Paint["Update complete, just run #{Paint['`rise`', '#3498db']} to deploy"]
-          end
+          puts "It seems you're on bleeding edge, fetching new changes..."
+          Rise::Text.vputs("Updating from #{`git show --no-color --oneline -s`.split(' ')[0]} to #{`git rev-parse --short HEAD`}")
+          `git pull`
+          puts Paint["Update complete, just run #{Paint['`rise`', '#3498db']} to deploy"]
         end
       rescue StandardError => e
         puts "Unable to check for updates. Error: #{Paint[e.message, 'red']}"
@@ -88,10 +85,11 @@ module Rise
           pw = Rise::Util.signup
       end
       File.open(File.join(RISE_DATA_DIR, 'auth', 'creds.json'), 'w') do |f|
-        vputs('Writing hash to creds.json...')
+        Rise::Text.vputs('Writing hash to creds.json...')
         creds_hash = { 'hash' => BCrypt::Password.create(pw) }
         f.puts(JSON.pretty_generate(creds_hash))
       end
+      puts "\nAll done!\nPlease run the `rise` command again to upload your files."
     end
 
     def self.signup

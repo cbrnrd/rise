@@ -8,7 +8,7 @@ module Rise
   # Holds constants used throughout the framework
   #
   module Constants
-    VERSION  = '0.2.4'.freeze
+    VERSION  = '0.2.5'.freeze
     EMAIL    = '0xCB@protonmail.com'.freeze
     AUTHORS  = ['Carter Brainerd']
     NAME     = 'rise-cli'.freeze

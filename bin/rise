@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 $LOAD_PATH.unshift(File.expand_path(File.join('..', 'lib'))) unless $LOAD_PATH.include?(File.expand_path(File.join('..', 'lib')))
+
 require 'core'
 
 options = {}
@@ -10,7 +11,7 @@ OptionParser.new do |opts|
   opts.banner = "Usage: #{$PROGRAM_NAME} [options]\nRise version: #{Rise::Constants::VERSION}"
   opts.separator Paint["\nGeneral Options: ", '#95a5a6']
 
-  opts.on('-d DIR', '--dir DIR', String, 'Upload files in DIR') do |d|
+  opts.on('-d DIR', '--dir DIR', String, 'Upload files in DIR (Defaults to the current directory)') do |d|
     options[:directory] = d unless d.nil?
   end
 
@@ -39,22 +40,31 @@ OptionParser.new do |opts|
 
   opts.on('-h', '--help', 'Show this help message') do
     puts opts
+    puts Rise::Text::TASKS_HELP
     exit
   end
 
   opts.separator Paint["\nTasks: ", '#95a5a6']
-  opts.on('--init', 'Reinitialize your password hash. (You will lose you old hash FOREVER)') do
-    Rise::Util.setup(false)
-    puts "\nPlease run the `rise` command again to upload your files using your new password."
-    exit 0
-  end
 
 end.parse!(ARGV)
+
+# Ladies and gentlemen, this is what
+# happens when optparse doesn't have
+# good subcommand/task syntax support
+while opt = ARGV.shift do
+  case opt
+  when 'init'
+    Rise::Util.setup(false)
+    exit 0
+  when 'update'
+    Rise::Util.check_for_update!
+    exit 0
+  end
+end
 
 
 if Rise::Util.first_run?
   Rise::Util.setup
-  puts "\nPlease run the `rise` command again to upload your files."
   exit 0
 end
 Rise::Util.check_for_update!
