@@ -24,16 +24,15 @@ module Rise
     #
     # 1 = git, 2 = gem, 3 = unknown
     #
-    def self.git_or_gem
+    def self.git_or_gem?
       gem = nil
-      1 if File.exist?(File.join(Rise::Constants::VERSION, '.git'))
+      return 1 if File.exist?(File.join(Rise::Constants::RISE_DIR, '.git'))
       if OS.windows?
         gem = system('which gem > NUL')
       else
         gem = system('which gem > /dev/null')
       end
-
-      2 if gem == true
+      return 2 if gem
       3
     end
 
@@ -41,11 +40,16 @@ module Rise
     # Check for a new version of the gem
     #
     def self.check_for_update!
-      src = Rise::Util.git_or_gem
+      src = Rise::Util.git_or_gem?
+      Rise::Text.vputs("Source: #{src}")
       begin
         if src == 2  # if the gem was downloaded from rubygems
           current_version = JSON.parse(HTTP.get('https://rubygems.org/api/v1/versions/rise-cli/latest.json'))['version']
-          if current_version != Rise::Constants::VERSION
+
+          current_version_i = current_version.gsub('.', '').to_i
+          puts "#{current_version_i} #{Rise::Constants::VERSION.gsub('.', '').to_i}"
+
+          if current_version_i > Rise::Constants::VERSION.gsub('.', '').to_i
             Whirly.start(
               spinner: 'line',
               status: "New version available (#{Paint[Rise::Constants::VERSION, 'red']} -> #{Paint[current_version, '#3498db']}), updating..."
@@ -55,7 +59,7 @@ module Rise
             end
           end
         elsif src == 1
-          puts "It seems you're on bleeding edge, fetching new changes..."
+          Rise::Text.vputs("It seems you're on bleeding edge, fetching new changes...")
           Rise::Text.vputs("Updating from #{`git show --no-color --oneline -s`.split(' ')[0]} to #{`git rev-parse --short HEAD`}")
           `git pull`
           puts Paint["Update complete, just run #{Paint['`rise`', '#3498db']} to deploy"]
@@ -78,18 +82,17 @@ module Rise
 
       puts Paint['Create a password to secure your uploads.', :bold]
       pw = Rise::Util.signup
-      while 1
-        break if pw.length > 8
-        puts Paint['Password not long enough,
-          it has to be longer than 8 characters', :red]
+      while pw.length < 8
+        puts Paint["Password not long enough,
+          it has to be longer than 8 characters\n", :red]
           pw = Rise::Util.signup
       end
       File.open(File.join(RISE_DATA_DIR, 'auth', 'creds.json'), 'w') do |f|
-        Rise::Text.vputs('Writing hash to creds.json...')
+        Rise::Text.vputs("\nWriting hash to creds.json...")
         creds_hash = { 'hash' => BCrypt::Password.create(pw) }
         f.puts(JSON.pretty_generate(creds_hash))
       end
-      puts "\nAll done!\nPlease run the `rise` command again to upload your files."
+      puts "\nAll done!\nRun #{Paint['`rise`', '#3498db']} to deploy"
     end
 
     def self.signup

@@ -1,7 +1,6 @@
 # Gems
 require 'clipboard'
-require 'rex/text'
-require 'subcommand'
+require 'optparse'
 
 # lib files
 require 'core/transport'

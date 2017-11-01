@@ -50,7 +50,6 @@ GEM
       ruby-progressbar (~> 1.7)
       unicode-display_width (~> 1.0, >= 1.0.1)
     ruby-progressbar (1.9.0)
-    subcommand (1.0.6)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.4)
@@ -73,7 +72,6 @@ DEPENDENCIES
   rspec
   rspec-core
   rubocop
-  subcommand
   whirly
 
 BUNDLED WITH
