@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 
 gem 'bcrypt', platforms: :ruby
 gem 'clipboard'
+gem 'credit_card_validations'
 gem 'http'
 gem 'os'
 gem 'paint'

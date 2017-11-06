@@ -7,6 +7,7 @@ require 'io/console'
 require 'whirly'
 require 'os'
 require 'json'
+require 'credit_card_validations'
 require_relative 'constants'
 
 module Rise
@@ -109,6 +110,27 @@ module Rise
       else
         system("open #{url}")
       end
+    end
+
+
+    # @param number [String] the credit card number to add
+    def add_cc_number(number)
+      if !number.is_a?(String)
+        raise ArgumentError, '`number` must be of type String'
+      end
+
+      if !CreditCardValidations::Detector.new(number).valid?
+        puts Paint['Credit card is not valid']
+        return
+      end
+
+      File.open(File.join(RISE_DIR, 'auth', 'payment', 'cc.json'), 'w') do |c|
+        c.puts(JSON.pretty_generate({'cc' => number}))
+      end
+
+      # TODO make a request to the backend to store the cc in db
+
+      puts 'Credit card stored for later use.'
     end
 
   end

@@ -5,7 +5,6 @@ require 'core'
 options = {}
 options[:open] = false
 options[:ignore_files] = nil
-# TODO: convert the tasks to use thor or Rex::Parser::Arguments from 'rex'
 OptionParser.new do |opts|
   opts.banner = "\nUsage: #{File.basename($PROGRAM_NAME)} [options] [task]\nRise version: #{Rise::Constants::VERSION}"
   opts.separator Paint["\nGlobal Options: ", '#95a5a6']

@@ -3,4 +3,5 @@ TODO things for rise:
   * Add a .keyfile to each upload containing a private key. This file will be used to make sure that the same uuid can't be uploaded to twice and for a future file deletion method.
   * Add said file deletion method
   * Add GZIP file uploads
-  * ADD .riseignore functionality
+  * Add free and premium accounts (to the website too)
+    - Add safe CC# storing for the local client
