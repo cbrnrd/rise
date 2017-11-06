@@ -33,7 +33,7 @@ GEM
       concurrent-ruby (~> 1.0)
     minitest (5.10.3)
     os (1.0.0)
-    paint (2.0.0)
+    paint (2.0.1)
     parallel (1.12.0)
     parser (2.4.0.0)
       ast (~> 2.2)
@@ -41,22 +41,22 @@ GEM
     public_suffix (3.0.0)
     rainbow (2.2.2)
       rake
-    rake (12.0.0)
+    rake (12.2.1)
     rex-text (0.2.15)
-    rspec (3.6.0)
-      rspec-core (~> 3.6.0)
-      rspec-expectations (~> 3.6.0)
-      rspec-mocks (~> 3.6.0)
-    rspec-core (3.6.0)
-      rspec-support (~> 3.6.0)
-    rspec-expectations (3.6.0)
+    rspec (3.7.0)
+      rspec-core (~> 3.7.0)
+      rspec-expectations (~> 3.7.0)
+      rspec-mocks (~> 3.7.0)
+    rspec-core (3.7.0)
+      rspec-support (~> 3.7.0)
+    rspec-expectations (3.7.0)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.6.0)
-    rspec-mocks (3.6.0)
+      rspec-support (~> 3.7.0)
+    rspec-mocks (3.7.0)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.6.0)
-    rspec-support (3.6.0)
-    rubocop (0.50.0)
+      rspec-support (~> 3.7.0)
+    rspec-support (3.7.0)
+    rubocop (0.51.0)
       parallel (~> 1.10)
       parser (>= 2.3.3.1, < 3.0)
       powerpack (~> 0.1)
@@ -70,14 +70,12 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.4)
-    unf_ext (0.0.7.4-x64-mingw32)
     unicode-display_width (1.3.0)
-    whirly (0.2.5)
+    whirly (0.2.6)
       unicode-display_width (~> 1.1)
 
 PLATFORMS
   ruby
-  x64-mingw32
 
 DEPENDENCIES
   bcrypt
@@ -93,4 +91,4 @@ DEPENDENCIES
   whirly
 
 BUNDLED WITH
-   1.15.4
+   1.16.0
