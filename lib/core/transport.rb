@@ -11,10 +11,10 @@ module Rise
     # Handles uploading files
     class Uploader
       attr_reader :folder_path, :total_files, :include_folder
-      attr_reader :uuid, :current_file, :total_files_size
+      attr_reader :uuid, :current_file, :total_files_size, :hash
       attr_accessor :files
 
-      def initialize(folder_path, excluded_files = [], include_folder = true)
+      def initialize(folder_path, key, excluded_files = [], include_folder = true)
         excluded_files.map! do |a|
           File.join(File.absolute_path(folder_path), a)
         end unless excluded_files.nil?
@@ -25,13 +25,19 @@ module Rise
         @total_files_size = calculate_files_size
         @include_folder   = include_folder
         @uuid             = "#{File.basename(File.absolute_path(folder_path)).gsub('_', '-')}-#{Rex::Text.rand_text_alphanumeric(8)}" # Structure: foldername-8RNDLTRS
+        @key              = key
       end
 
+      # This makes a HTTP +PUT+ request on port 8080 to the /api/v1/ endpoint
+      # for each file in the selected folder.
       #
-      # Uploads the files from +folder_path+ to the upload server
+      # The body of the request is the contents of the file.
+      #
+      # The +Authorization+ request header is used for making the .keyfile on the serverside
+      # for the future file deletion method.
       # @return String the final URL of the uploaded contents
       #
-      def upload!(*)
+      def upload!
         upload_uri_base = "http://rise.sh:8080/api/v1/#{@uuid}"
         access_uri = "https://rise.sh/#{@uuid}"
         uri = ''
@@ -46,7 +52,7 @@ module Rise
             File.expand_path(folder_path), '')
           uri = URI.parse("#{upload_uri_base}/#{final_path.gsub(' ', '')}?dir=#{isdir}")
           begin
-            HTTP.put(uri.to_s, body: File.read(f))
+            HTTP.auth("#{key}").put(uri.to_s, body: File.read(f))
           rescue Errno::EISDIR
             HTTP.put(uri.to_s, body: '')
             next

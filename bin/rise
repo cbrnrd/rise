@@ -76,7 +76,8 @@ rescue Errno::ENOENT
   ignored = options[:ignored_files]
 end
 
-uploader = Rise::Transport::Uploader.new(dir, ignored)
+key = JSON.parse(File.read(File.join(Rise::Constants::RISE_DATA_DIR, 'auth', 'creds.json')))['hash']
+uploader = Rise::Transport::Uploader.new(dir, key, ignored)
 
 if uploader.total_files_size > 52428800
   puts Paint["Max file size reached (#{uploader.total_files_size} > 50MB)", '#FF0000']

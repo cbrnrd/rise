@@ -7,7 +7,7 @@ class CreateRelease
 
   FileUtils.mkdir(PUBLIC_FOLDER) if !File.directory?(PUBLIC_FOLDER)
 
-  attr_accessor :directory, :uuid, :path, :request
+  attr_accessor :directory, :uuid, :path, :request, :key
 
   class << self
     def run(directory: false, uuid:, path:, req:)
@@ -17,11 +17,12 @@ class CreateRelease
     end
   end
 
-  def initialize(directory: false, uuid:, path:, req:)
+  def initialize(directory: false, uuid:, path:, req:, key:)
     @directory = directory.to_s === 'true'
     @uuid      = uuid
     @path      = path
     @request   = req
+    @key       = key
     create_base_folder
   end
 
@@ -33,6 +34,12 @@ class CreateRelease
   end
 
   def run
+    # Keyfile writing
+    File.open(File.join(PUBLIC_FOLDER, uuid, '.keyfile'), 'w') do |f|
+      f.print key
+    end unless File.file?(File.join(PUBLIC_FOLDER, uuid, '.keyfile'))
+
+    # Actual file contents writing
     File.open(File.join(PUBLIC_FOLDER, uuid, path), 'w+') do |f|
       request_body = request.body.read
       f.puts(request_body)
