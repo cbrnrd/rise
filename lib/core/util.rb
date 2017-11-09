@@ -83,7 +83,8 @@ module Rise
 
       puts Paint['Create a password to secure your uploads.', :bold]
       pw = Rise::Util.signup
-      while pw.length < 8
+      while (length = pw.length)
+        break if length > 8
         puts Paint["Password not long enough,
           it has to be longer than 8 characters\n", :red]
           pw = Rise::Util.signup

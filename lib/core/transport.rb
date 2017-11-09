@@ -11,7 +11,7 @@ module Rise
     # Handles uploading files
     class Uploader
       attr_reader :folder_path, :total_files, :include_folder
-      attr_reader :uuid, :current_file, :total_files_size, :hash
+      attr_reader :uuid, :current_file, :total_files_size, :key
       attr_accessor :files
 
       def initialize(folder_path, key, excluded_files = [], include_folder = true)

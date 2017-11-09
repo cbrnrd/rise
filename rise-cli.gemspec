@@ -23,5 +23,5 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'whirly'
   s.add_runtime_dependency 'bcrypt'
   s.add_runtime_dependency 'os'
-
+  s.add_runtime_dependency 'credit_card_validations'
 end

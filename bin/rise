@@ -13,6 +13,10 @@ OptionParser.new do |opts|
     options[:directory] = d unless d.nil?
   end
 
+  opts.on('-q', '--quiet', 'Run with very little output (only shows result URL)') do
+    options[:quiet] = true
+  end
+
   opts.on('-v', '--version', 'Show the rise version and exit') do
     puts "Rise version: #{Paint[Rise::Constants::VERSION, '#2ecc71']}"
     exit 0
@@ -31,7 +35,7 @@ OptionParser.new do |opts|
     options[:open] = true
   end
 
-  opts.on('-u', '--update', 'Check if rise has a newer version and install it') do
+  opts.on('-u', '--update', 'Check if rise has a newer version and install it (aliased by `update` task)') do
     Rise::Util.check_for_update!
     exit 0
   end
@@ -76,7 +80,7 @@ rescue Errno::ENOENT
   ignored = options[:ignored_files]
 end
 
-key = JSON.parse(File.read(File.join(Rise::Constants::RISE_DATA_DIR, 'auth', 'creds.json')))['hash']
+key = JSON.parse(File.read(File.join(RISE_DATA_DIR, 'auth', 'creds.json')))['hash']
 uploader = Rise::Transport::Uploader.new(dir, key, ignored)
 
 if uploader.total_files_size > 52428800
@@ -84,11 +88,18 @@ if uploader.total_files_size > 52428800
   exit 0
 end
 
+if options[:quiet]
+  result_url = uploader.upload!
+  Clipboard.copy(result_url)
+  print Paint["Your url is: #{result_url} (copied to clipboard) ", :bold]
+  exit 0
+end
+
 puts Paint['Thanks for using Rise! Your local source for serverless deployment!', '#95a5a6']
 
 Whirly.start(spinner: 'dots', status: "Uploading files (#{uploader.total_files} total files)") do
   beginning_time = Time.now
-  result_url = uploader.upload!(options[:verbose]) # Do the file upload
+  result_url = uploader.upload! # Do the file upload
 
   Whirly.status = "Done!\n"
   Clipboard.copy(result_url)

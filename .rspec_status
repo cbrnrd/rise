@@ -1,7 +1,7 @@
 example_id                   | status | run_time        |
 ---------------------------- | ------ | --------------- |
-./spec/rise/cli_spec.rb[1:1] | passed | 0.00159 seconds |
-./spec/rise/cli_spec.rb[1:2] | passed | 0.00098 seconds |
-./spec/rise/cli_spec.rb[1:3] | passed | 0.00014 seconds |
-./spec/rise/cli_spec.rb[1:4] | passed | 0.00012 seconds |
-./spec/rise/cli_spec.rb[1:5] | passed | 0.08995 seconds |
+./spec/rise/cli_spec.rb[1:1] | passed | 0.0007 seconds  |
+./spec/rise/cli_spec.rb[1:2] | passed | 0.00069 seconds |
+./spec/rise/cli_spec.rb[1:3] | passed | 0.00016 seconds |
+./spec/rise/cli_spec.rb[1:4] | passed | 0.00011 seconds |
+./spec/rise/cli_spec.rb[1:5] | passed | 0.09234 seconds |
