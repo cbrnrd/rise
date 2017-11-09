@@ -6,7 +6,7 @@ if [[ "$?" -ne "0"  ]]; then
   exit $?
 fi
 
-rubocop #--fail-level W
+rubocop --fail-level W
 if [[ "$?" -ne "0"  ]]; then
   echo -e "\033[0;31mRubocop failed, not building the gem\033[0;0m"
   exit $?

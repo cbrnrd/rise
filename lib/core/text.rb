@@ -9,7 +9,7 @@ module Rise
     update                           Updates the current rise-cli installation (aliased by -u)
 
 #{Paint['Examples:', '#95a5a6']}
-    #{Paint['$ rise init --verbosev', '#2ecc71']}           Reinitializes your password with verbose output
+    #{Paint['$ rise init --verbose', '#2ecc71']}            Reinitializes your password with verbose output
     #{Paint['$ rise -d ../my-project -o', '#2ecc71']}       Will upload all files in `../my-project` and open it in a browser
     }
 
