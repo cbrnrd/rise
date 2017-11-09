@@ -78,6 +78,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activesupport
   bcrypt
   clipboard
   credit_card_validations

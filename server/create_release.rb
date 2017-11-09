@@ -1,4 +1,5 @@
 # Other useful stuff
+require 'active_support'
 require 'fileutils'
 require 'paint'
 
@@ -41,7 +42,7 @@ class CreateRelease
 
     # Actual file contents writing
     File.open(File.join(PUBLIC_FOLDER, uuid, path), 'w+') do |f|
-      request_body = request.body.read
+      request_body = ActiveSupport::Gzip.decompress(request.body.read)
       f.puts(request_body)
     end
   end

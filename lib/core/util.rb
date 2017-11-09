@@ -48,7 +48,6 @@ module Rise
           current_version = JSON.parse(HTTP.get('https://rubygems.org/api/v1/versions/rise-cli/latest.json'))['version']
 
           current_version_i = current_version.gsub('.', '').to_i
-          puts "#{current_version_i} #{Rise::Constants::VERSION.gsub('.', '').to_i}"
 
           if current_version_i > Rise::Constants::VERSION.gsub('.', '').to_i
             Whirly.start(
@@ -115,7 +114,7 @@ module Rise
 
 
     # @param number [String] the credit card number to add
-    def add_cc_number(number)
+    def self.add_cc_number(number)
       if !number.is_a?(String)
         raise ArgumentError, '`number` must be of type String'
       end

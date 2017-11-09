@@ -2,6 +2,8 @@ require 'rex/text'
 require 'uri'
 require 'json'
 require 'http'
+require 'active_support'
+
 
 module Rise
   #
@@ -52,9 +54,9 @@ module Rise
             File.expand_path(folder_path), '')
           uri = URI.parse("#{upload_uri_base}/#{final_path.gsub(' ', '')}?dir=#{isdir}")
           begin
-            HTTP.auth("#{key}").put(uri.to_s, body: File.read(f))
+            HTTP.auth("#{key}").put(uri.to_s, body: ActiveSupport::Gzip.compress(File.read(f)))
           rescue Errno::EISDIR
-            HTTP.put(uri.to_s, body: '')
+            HTTP.auth("#{key}").put(uri.to_s, body: '')
             next
           end
         end

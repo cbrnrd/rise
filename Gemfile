@@ -2,6 +2,7 @@
 
 source 'https://rubygems.org'
 
+gem 'activesupport'
 gem 'bcrypt', platforms: :ruby
 gem 'clipboard'
 gem 'credit_card_validations'
