@@ -54,9 +54,11 @@ module Rise
             File.expand_path(folder_path), '')
           uri = URI.parse("#{upload_uri_base}/#{final_path.gsub(' ', '')}?dir=#{isdir}")
           begin
-            HTTP.auth("#{key}").put(uri.to_s, body: ActiveSupport::Gzip.compress(File.read(f)))
+            res = HTTP.auth("#{key}").put(uri.to_s, body: ActiveSupport::Gzip.compress(File.read(f)))
+            abort(Paint["Upload failed. Got error code #{res.code} with message: #{JSON.parse(res)['message']}", :red]) unless (!res.code.nil? && res.code == 200)
           rescue Errno::EISDIR
-            HTTP.auth("#{key}").put(uri.to_s, body: '')
+            res = HTTP.auth("#{key}").put(uri.to_s, body: '')
+            abort(Paint["Upload failed. Got error code #{res.code} with message: #{JSON.parse(res)['message']}", :red]) unless (!res.code.nil? && res.code == 200)
             next
           end
         end
