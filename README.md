@@ -49,8 +49,8 @@ Please read [CONTRIBUTING.md](https://github.com/cbrnrd/rise/blob/master/CONTRIB
 - Open source so that you can know exactly what code is runnning on your computer.
 
 ## Coming soon
-  - gzip file transfer
-  - actual use of the password hash for secure uploads
+- Actual use of the password hash for secure uploads and deletion of websites
+- Account dashboard and website statistics
 
 ## Authors
 
