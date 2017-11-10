@@ -11,8 +11,8 @@ class CreateRelease
   attr_accessor :directory, :uuid, :path, :request, :key
 
   class << self
-    def run(directory: false, uuid:, path:, req:)
-      service = self.new(directory: directory, uuid: uuid, path: path, req: req)
+    def run(directory: false, uuid:, path:, req:, key:)
+      service = self.new(directory: directory, uuid: uuid, path: path, req: req, key: key)
       return FileUtils.mkdir(File.join(PUBLIC_FOLDER, uuid, path)) if service.directory
       service.run
     end
@@ -37,8 +37,8 @@ class CreateRelease
   def run
     # Keyfile writing
     File.open(File.join(PUBLIC_FOLDER, uuid, '.keyfile'), 'w') do |f|
-      f.print key
-    end unless File.file?(File.join(PUBLIC_FOLDER, uuid, '.keyfile'))
+      f.print @key
+    end unless File.exists?(File.join(PUBLIC_FOLDER, uuid, '.keyfile'))
 
     # Actual file contents writing
     File.open(File.join(PUBLIC_FOLDER, uuid, path), 'w+') do |f|

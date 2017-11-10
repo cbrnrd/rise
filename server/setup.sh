@@ -1,4 +1,4 @@
 #!/bin/bash
-mkdir ~/rise-server
+mkdir ~/rise-server-public
 
 bundle install
