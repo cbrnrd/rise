@@ -38,7 +38,7 @@ class CreateRelease
     # Keyfile writing
     File.open(File.join(PUBLIC_FOLDER, uuid, '.keyfile'), 'w') do |f|
       f.print @key
-    end unless File.exists?(File.join(PUBLIC_FOLDER, uuid, '.keyfile'))
+    end unless File.exist?(File.join(PUBLIC_FOLDER, uuid, '.keyfile'))
 
     # Actual file contents writing
     File.open(File.join(PUBLIC_FOLDER, uuid, path), 'w+') do |f|
