@@ -6,7 +6,7 @@ require 'paint'
 class CreateRelease
   PUBLIC_FOLDER = File.join(Dir.home, 'rise-server-public').freeze
 
-  FileUtils.mkdir(PUBLIC_FOLDER) if !File.directory?(PUBLIC_FOLDER)
+  FileUtils.mkdir(PUBLIC_FOLDER) unless File.directory?(PUBLIC_FOLDER)
 
   attr_accessor :directory, :uuid, :path, :request, :key
 
@@ -38,7 +38,7 @@ class CreateRelease
     # Keyfile writing
     File.open(File.join(PUBLIC_FOLDER, uuid, '.keyfile'), 'w') do |f|
       f.print @key
-    end unless File.exists?(File.join(PUBLIC_FOLDER, uuid, '.keyfile'))
+    end unless File.exist?(File.join(PUBLIC_FOLDER, uuid, '.keyfile'))
 
     # Actual file contents writing
     File.open(File.join(PUBLIC_FOLDER, uuid, path), 'w+') do |f|
