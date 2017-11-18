@@ -40,7 +40,7 @@ module Rise
       # @return String the final URL of the uploaded contents
       #
       def upload!
-        upload_uri_base = "http://rise.sh:8080/api/v1/#{@uuid}"
+        upload_uri_base = "http://rise.sh/api/v1/#{@uuid}"
         access_uri = "https://rise.sh/#{@uuid}"
         uri = ''
 
