@@ -13,10 +13,14 @@ set :port, 8080
 set :show_exceptions, true if development?
 
 put '/api/v1/:uuid/*' do |uuid, path|
-  if request.env['HTTP_AUTHORIZATION'].nil?
-    return JSON.pretty_generate({'code' => 401, 'message' => 'Unauthorized'})
+  begin
+    if request.env['HTTP_AUTHORIZATION'].nil?
+      return JSON.pretty_generate({'code' => 401, 'message' => 'Unauthorized'})
+    end
+    CreateRelease.run(directory: params[:dir], uuid: uuid, path: path, req: request, key: request.env['HTTP_AUTHORIZATION'])
+  rescue StandardError => e
+    return JSON.pretty_generate({'code' => 500, 'message' => e.message})
   end
-  CreateRelease.run(directory: params[:dir], uuid: uuid, path: path, req: request, key: request.env['HTTP_AUTHORIZATION'])
 end
 
 post '/api/v1/creditcard/?' do

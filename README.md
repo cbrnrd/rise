@@ -1,6 +1,6 @@
 [![rise](https://github.com/cbrnrd/rise/raw/master/img/rise_logo.png)](https://rise.sh)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-[![Code Climate](https://img.shields.io/codeclimate/github/cbrnrd/rise.svg?style=flat-square)](https://codeclimate.com/github/cbrnrd/rise)
+[![Code Climate](https://img.shields.io/codeclimate/github/kabisaict/flow.svg?style=flat-square)](https://codeclimate.com/github/cbrnrd/rise)
 [![Build Status](https://img.shields.io/travis/cbrnrd/rise.svg?style=flat-square)](https://travis-ci.org/cbrnrd/rise)
 [![Gem](https://img.shields.io/gem/v/rise-cli.svg?style=flat-square)](https://rubygems.org/gems/rise-cli)
 [![Gem](https://img.shields.io/gem/dt/rise-cli.svg?style=flat-square)](https://rubygems.org/gems/rise-cli)
@@ -49,7 +49,6 @@ Please read [CONTRIBUTING.md](https://github.com/cbrnrd/rise/blob/master/CONTRIB
 - Open source so that you can know exactly what code is runnning on your computer.
 
 ## Coming soon
-- Actual use of the password hash for secure uploads and deletion of websites
 - Account dashboard and website statistics
 
 ## Authors

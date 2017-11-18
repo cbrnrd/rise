@@ -6,7 +6,7 @@ require 'paint'
 class CreateRelease
   PUBLIC_FOLDER = File.join(Dir.home, 'rise-server-public').freeze
 
-  FileUtils.mkdir(PUBLIC_FOLDER) if !File.directory?(PUBLIC_FOLDER)
+  FileUtils.mkdir(PUBLIC_FOLDER) unless File.directory?(PUBLIC_FOLDER)
 
   attr_accessor :directory, :uuid, :path, :request, :key
 
