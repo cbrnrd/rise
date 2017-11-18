@@ -63,7 +63,7 @@ end
 server = WEBrick::HTTPServer.new(webrick_options)
 
 # Add login path
-server.mount_proc '/login' do |req, res|
+server.mount_proc '/login' do |_, res|
   res.body = File.read('/root/rise-server-public/templates/login.html')
 end
 
