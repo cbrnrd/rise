@@ -42,7 +42,14 @@ module Rise
     #
     def self.check_for_update!
       src = Rise::Util.git_or_gem?
-      Rise::Text.vputs("Source: #{src}")
+      if src == 2
+        Rise::Text.vputs("Source: RubyGems")
+      elsif src == 1
+        Rise::Text.vputs("Source: git")
+      else
+        Rise::Text.vputs("Source: unknown")
+      end
+
       begin
         if src == 2  # if the gem was downloaded from rubygems
           current_version = JSON.parse(HTTP.get('https://rubygems.org/api/v1/versions/rise-cli/latest.json'))['version']

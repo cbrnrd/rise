@@ -67,6 +67,7 @@ module Rise
 
       protected
 
+      # Calculates the size of all the files combined
       def calculate_files_size
         @files.inject(0){|sum, file| sum + File.size(file)}
       end
