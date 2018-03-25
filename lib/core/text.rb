@@ -7,6 +7,7 @@ module Rise
     TASKS_HELP =
     %Q{    init                             Reinitialize your password hash. (You will lose you old hash FOREVER)
     update                           Updates the current rise-cli installation (aliased by -u)
+    version                          Show the `rise` version and exit
 
 #{Paint['Examples:', '#95a5a6']}
     #{Paint['$ rise init --verbose', '#2ecc71']}            Reinitializes your password with verbose output

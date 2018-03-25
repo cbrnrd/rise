@@ -61,6 +61,9 @@ while (opt = ARGV.shift) do
   when 'update'
     Rise::Util.check_for_update!
     exit 0
+  when 'version'
+    puts "Rise version: #{Paint[Rise::Constants::VERSION, '#2ecc71']}"
+    exit 0
   end
 end
 
