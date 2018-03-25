@@ -1,5 +1,6 @@
 TODO things for rise:
-  * Convert CLI options to use trolltop (mainly for subcommands)
+  * Add more tasks
+  * Better support for tasks
   * Add said file deletion method
   * Add free and premium accounts (to the website too)
     - Add safe CC# storing for the local client
