@@ -1,6 +1,6 @@
 [![rise](https://github.com/cbrnrd/rise/raw/master/img/rise_logo.png)](https://rise.sh)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-[![Code Climate](https://img.shields.io/codeclimate/github/cbrnrd/rise.svg?style=flat-square)](https://codeclimate.com/github/cbrnrd/rise)
+[![Donations Badge](https://yourdonation.rocks/images/badge.svg)]({http://carterbrainerd.me/donations/})
 [![Build Status](https://img.shields.io/travis/cbrnrd/rise.svg?style=flat-square)](https://travis-ci.org/cbrnrd/rise)
 [![Gem](https://img.shields.io/gem/v/rise-cli.svg?style=flat-square)](https://rubygems.org/gems/rise-cli)
 [![Gem](https://img.shields.io/gem/dt/rise-cli.svg?style=flat-square)](https://rubygems.org/gems/rise-cli)
