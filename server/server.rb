@@ -8,8 +8,8 @@ webrick_options = {
   DocumentRoot:    '/root/rise-server-public',
   SSLEnable:       true,
   SSLVerifyClient: OpenSSL::SSL::VERIFY_NONE,
-  SSLCertificate:  OpenSSL::X509::Certificate.new(File.read('/etc/letsencrypt/archive/rise.sh/cert1.pem')),
-  SSLPrivateKey:   OpenSSL::PKey::RSA.new(File.read('/etc/letsencrypt/archive/rise.sh/privkey1.pem')),
+  SSLCertificate:  OpenSSL::X509::Certificate.new(File.read('/etc/letsencrypt/archive/rise.sh/cert3.pem')),
+  SSLPrivateKey:   OpenSSL::PKey::RSA.new(File.read('/etc/letsencrypt/archive/rise.sh/privkey3.pem')),
   SSLCertName:     [['US', WEBrick::Utils.getservername]]
 }
 
@@ -41,12 +41,6 @@ fork do
     rescue StandardError => e
       return JSON.pretty_generate({'code' => 500, 'message' => e.message})
     end
-  end
-
-  # Catch everything else
-  get '*' do |path|
-    $stderr.puts Paint["Redirecting http -> https (#{request.ip})", :red]
-    redirect("https://rise.sh#{path}")
   end
 end
 
