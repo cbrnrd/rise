@@ -61,6 +61,9 @@ while (opt = ARGV.shift) do
   when 'update'
     Rise::Util.check_for_update!
     exit 0
+  when 'version'
+    puts "Rise version: #{Paint[Rise::Constants::VERSION, '#2ecc71']}"
+    exit 0
   end
 end
 
@@ -97,7 +100,7 @@ end
 
 puts Paint['Thanks for using Rise! Your local source for serverless deployment!', '#95a5a6']
 
-Whirly.start(spinner: 'dots', status: "Uploading files (#{uploader.total_files} total files)") do
+Whirly.start(spinner: 'dots10', status: "Uploading files (#{uploader.total_files} total files)") do
   beginning_time = Time.now
   result_url = uploader.upload! # Do the file upload
 
