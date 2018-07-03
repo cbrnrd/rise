@@ -60,3 +60,8 @@ See also the list of [contributors](https://github.com/cbrnrd/rise/contributors)
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](https://github.com/cbrnrd/rise/blob/master/LICENSE) file for details
+
+
+<p align="center">
+  <img height="100" width="300" src="https://i.imgur.com/obHmDnX.png">
+</p>
