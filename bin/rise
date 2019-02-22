@@ -104,7 +104,6 @@ Whirly.start(spinner: 'dots10', status: "Uploading files (#{uploader.total_files
   beginning_time = Time.now
   result_url = uploader.upload! # Do the file upload
 
-  Whirly.status = "Done!\n"
   Clipboard.copy(result_url)
   print Paint["Your url is: #{result_url} (copied to clipboard) ", :bold]
   puts Paint["[#{((Time.now - beginning_time)).round(2)}s]", '#95a5a6']

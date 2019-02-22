@@ -18,7 +18,7 @@ module Rise
     # Prints +msg+ if the +RISE_VERBOSE+ environment variable is set to 'yes' (set with --verbose)
     #
     def self.vputs(msg='')
-      puts("[" + Paint["VERBOSE"] + "] - " + msg) if ENV['RISE_VERBOSE'] == 'yes'
+      puts("[" + Paint["VERBOSE", "yellow"] + "] - " + msg) if ENV['RISE_VERBOSE'] == 'yes'
     end
   end
 end

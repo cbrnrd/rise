@@ -43,11 +43,11 @@ module Rise
     def self.check_for_update!
       src = Rise::Util.git_or_gem?
       if src == 2
-        Rise::Text.vputs("Source: RubyGems")
+        Rise::Text.vputs("Update source: RubyGems")
       elsif src == 1
-        Rise::Text.vputs("Source: git")
+        Rise::Text.vputs("Update source: git")
       else
-        Rise::Text.vputs("Source: unknown")
+        Rise::Text.vputs("Update source: unknown")
       end
 
       begin
