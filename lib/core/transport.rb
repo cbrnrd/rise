@@ -5,7 +5,6 @@ require 'http'
 require 'active_support'
 require 'core'
 
-
 module Rise
   #
   # Handles all communication with the rise upload server
@@ -14,10 +13,10 @@ module Rise
     # Handles uploading files
     class Uploader
       attr_reader :folder_path, :total_files, :include_folder
-      attr_reader :uuid, :current_file, :total_files_size, :key
+      attr_reader :uuid, :current_file, :total_files_size, :key, :opts
       attr_accessor :files
 
-      def initialize(folder_path, key, excluded_files = [], include_folder = true)
+      def initialize(folder_path, key="nokey", excluded_files = [], include_folder = true, opts = {})
         excluded_files.map! do |a|
           File.join(File.absolute_path(folder_path), a)
         end unless excluded_files.nil?
@@ -27,7 +26,7 @@ module Rise
         @total_files      = @files.length
         @total_files_size = calculate_files_size
         @include_folder   = include_folder
-        @uuid             = "#{File.basename(File.absolute_path(folder_path)).gsub('_', '-')}-#{Rex::Text.rand_text_alphanumeric(8)}" # Structure: foldername-8RNDLTRS
+        @uuid             = opts[:spec_url] || "#{File.basename(File.absolute_path(folder_path)).gsub('_', '-')}-#{Rex::Text.rand_text_alphanumeric(8)}" # Structure: foldername-8RNDLTRS
         @key              = key
       end
 
@@ -45,6 +44,14 @@ module Rise
         access_uri = "https://rise.sh/#{@uuid}"
         uri = ''
 
+        # Check if dir already exists
+        unless HTTP.get(access_uri).code == 404
+          newpath = "#{File.basename(File.absolute_path(folder_path)).gsub('_', '-')}-#{Rex::Text.rand_text_alphanumeric(8)}"
+          puts "Path /#{@uuid} already exists. Using /#{newpath} instead."
+          @uuid = newpath
+        end
+
+
         # This sorts the files by (file path) length.
         # It is supposed to make the server make the first layer of files
         # before the rest of the layers.
@@ -53,7 +60,7 @@ module Rise
           isdir = File.directory?(f)
           final_path = File.absolute_path(f).gsub(
             File.expand_path(folder_path), '')
-          uri = URI.parse("#{upload_uri_base}/#{final_path.gsub(' ', '')}?dir=#{isdir}")
+          uri = URI.parse("#{upload_uri_base}/#{final_path.delete(' ')}?dir=#{isdir}")
           begin
             Rise::Text.vputs("Uploading #{File.basename(f)}")
             res = HTTP.auth("#{key}").put(uri.to_s, body: ActiveSupport::Gzip.compress(File.read(f)))

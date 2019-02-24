@@ -2,7 +2,6 @@ require 'fileutils'
 require 'paint'
 require 'json'
 require 'http'
-require 'bcrypt'
 require 'io/console'
 require 'whirly'
 require 'os'
@@ -85,20 +84,6 @@ module Rise
         puts Paint['Detected first time setup, creating necessary files...', :blue]
         FileUtils.mkdir(RISE_DATA_DIR)
         FileUtils.mkdir(File.join(RISE_DATA_DIR, 'auth'))
-      end
-
-      puts Paint['Create a password to secure your uploads.', :bold]
-      pw = Rise::Util.signup
-      while (length = pw.length)
-        break if length > 8
-        puts Paint["Password not long enough,
-          it has to be longer than 8 characters\n", :red]
-          pw = Rise::Util.signup
-      end
-      File.open(File.join(RISE_DATA_DIR, 'auth', 'creds.json'), 'w') do |f|
-        Rise::Text.vputs("\nWriting hash to creds.json...")
-        creds_hash = { 'hash' => BCrypt::Password.create(pw) }
-        f.puts(JSON.pretty_generate(creds_hash))
       end
       puts "\nAll done!\nRun #{Paint['`rise`', '#3498db']} to deploy"
     end

@@ -16,8 +16,4 @@ RSpec.describe Rise::Constants do
   it "is rise-cli" do
     expect(Rise::Constants::NAME).to eq('rise-cli')
   end
-
-  it "bcrypt installation is OK" do
-    expect(BCrypt::Password.create('password').to_s[0..6]).to eq('$2a$10$')
-  end
 end

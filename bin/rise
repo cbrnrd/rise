@@ -28,7 +28,7 @@ OptionParser.new do |opts|
 
   opts.on('-i', '--ignore FILES', Array, 'Ignore the given files in the upload. These will be ignored if there is a .riseignore file.') do |a|
     options[:ignored_files] = a unless a.nil?
-    puts "Reminder: You can add the files to .riseignore instead of using the -i flag"
+    puts 'Reminder: You can add the files to .riseignore instead of using the -i flag'
   end
 
   opts.on('-o', '--open', 'Open the deployment in a browser if possible') do
@@ -40,6 +40,10 @@ OptionParser.new do |opts|
     exit 0
   end
 
+  opts.on('-s', '--specify-url PATH', 'Use a specific URL path (if available).') do |s|
+    options[:spec_url] = s.to_s
+  end
+
   opts.on('-h', '--help', 'Show this help message') do
     puts opts
     puts Rise::Text::TASKS_HELP
@@ -47,13 +51,12 @@ OptionParser.new do |opts|
   end
 
   opts.separator Paint["\nTasks: ", '#95a5a6']
-
 end.parse!(ARGV)
 
 # Ladies and gentlemen, this is what
 # happens when optparse doesn't have
 # good subcommand/task syntax support
-while (opt = ARGV.shift) do
+while (opt = ARGV.shift)
   case opt
   when 'init'
     Rise::Util.setup(false)
@@ -67,26 +70,25 @@ while (opt = ARGV.shift) do
   end
 end
 
-
 if Rise::Util.first_run?
   Rise::Util.setup
   exit 0
 end
+
 Rise::Util.check_for_update!
 dir = options[:directory] || Dir.pwd
 ignored = nil
 result_url = ''
 
 begin
-  ignored = File.read(File.join(dir, '.riseignore')).split("\n").map { |a| a.gsub!(' ', '')}
+  ignored = File.read(File.join(dir, '.riseignore')).split("\n").map { |a| a.delete!(' ') }
 rescue Errno::ENOENT
   ignored = options[:ignored_files]
 end
 
-key = JSON.parse(File.read(File.join(RISE_DATA_DIR, 'auth', 'creds.json')))['hash']
-uploader = Rise::Transport::Uploader.new(dir, key, ignored)
+uploader = Rise::Transport::Uploader.new(dir, excluded_files: ignored, opts: options)
 
-if uploader.total_files_size > 52428800
+if uploader.total_files_size > 52_428_800
   puts Paint["Max file size reached (#{uploader.total_files_size} > 50MB)", '#FF0000']
   exit 0
 end
@@ -94,7 +96,7 @@ end
 if options[:quiet]
   result_url = uploader.upload!
   Clipboard.copy(result_url)
-  print Paint["Your url is: #{result_url} (copied to clipboard) ", :bold]
+  print result_url
   exit 0
 end
 
