@@ -1,3 +1,4 @@
+(This service has been discontinued. You can run your own rise server and use this as the client.)
 [![rise](https://github.com/cbrnrd/rise/raw/master/img/rise_logo.png)](https://rise.sh)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 [![Donations Badge](https://yourdonation.rocks/images/badge.svg)](http://carterbrainerd.me/donations/)
